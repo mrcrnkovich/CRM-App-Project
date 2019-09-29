@@ -5,3 +5,9 @@ flask_wtf
 flask_mail
 sqlalchemy
 flask_sqlalchemy
+flask_cors
+numpy
+pandas
+flask_migrate
+flask_bootstrap
+bokeh
