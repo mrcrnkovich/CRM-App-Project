@@ -34,8 +34,8 @@ class Client(db.Model):
 
 	#unique client id
 	id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Column(db.String(16), index=True, unique=True)
-	last_name = db.Column(db.String(32), index=True, unique=True)
+	first_name = db.Column(db.String(16), index=True)
+	last_name = db.Column(db.String(32), index=True)
 	email = db.Column(db.String(128), index=True, unique=True)
 	phone = db.Column(db.String(16))
 

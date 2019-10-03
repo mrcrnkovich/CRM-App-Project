@@ -74,3 +74,12 @@ def addClient(client):
     print("Adding client:")
     print(f"First Name is: {client['first_name']}")
     print(f"Last Name is: {client['last_name']}")
+    client = models.Client(first_name=client['first_name'],
+                            last_name=client['last_name'],
+                            email=client['email'],
+                            phone=client['phone'],
+                            user_id=client['user_id'],
+                            user=client['user'])
+    db.session.add(client)
+    db.session.commit()
+    print("Client successfully added")
