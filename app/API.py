@@ -9,7 +9,7 @@ from app import db
 from app.models import Client, User, Properties_Shown
 
 
-class Clients(Resource):
+class clientList(Resource):
 	# method to return clients by agent/username
 
 	def get(self, username):
@@ -19,7 +19,7 @@ class Clients(Resource):
 
 	#test for POST data from API to represent a new client
 	# add put method for clients, need to define format
-	
+
 	def post(self, username):
 	    
 	    data = json.loads(request.data)
@@ -28,6 +28,55 @@ class Clients(Resource):
 
 	    # update response to conform with general standards.
 	    return("sucess"+"\n")
+
+	def put(self, username):
+		pass
+
+	def delete(self, username):
+		pass
+
+class Clients(Resource):
+# method to return clients by agent/username
+
+	def get(self, username, client_id):
+		abort_null_agent(username)
+		clients = db.session.query(Client).join(User).filter(User.username==username).\
+			filter(Client.id==client_id).all()
+		return ({"clients":[client.json() for client in clients]})	
+
+
+class Properties(Resource):
+
+	def get(self,property_id):
+		print ('works')
+		abort_null_property(property_id)
+		pass
+
+	def post(self, property_id):
+		pass
+
+	def put(self, property_id):
+		pass
+
+	def delete(self, property_id):
+		pass
+
+class Agents (Resource):
+
+	def get(self):
+		agents = db.session.query(User).all()
+		return ({"Agents":[{"Username":agent.username, "ID":agent.id} for agent in agents]})
+
+	def post(self):
+		pass
+
+	def put(self, username):
+		pass
+
+	def delete(self, username):
+		pass
+
+
 
 
 # Move this to separate module in Home for adding/modifiying clients
@@ -64,33 +113,3 @@ def abort_null_property(property_id):
 	if not db.session.query(Properties_Shown).filter_by(Property_ID=property_id).first():
 		abort(404, message=f"Property ID #{property_id} does not exist")
 
-class Properties(Resource):
-
-	def get(self,property_id):
-		print ('works')
-		abort_null_property(property_id)
-		pass
-
-	def post(self, property_id):
-		pass
-
-	def put(self, property_id):
-		pass
-
-	def delete(self, property_id):
-		pass
-
-class Agents (Resource):
-
-	def get(self):
-		agents = db.session.query(User).all()
-		return ({"Agents":[{"Username":agent.username, "ID":agent.id} for agent in agents]})
-
-	def post(self):
-		pass
-
-	def put(self, username):
-		pass
-
-	def delete(self, username):
-		pass

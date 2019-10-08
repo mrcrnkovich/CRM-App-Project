@@ -28,7 +28,8 @@ from app import models
 from app import dashboard
 from app import API
 
-api.add_resource(API.Clients, "/clients/<username>")
+api.add_resource(API.clientList, "/clients/<username>")
+api.add_resource(API.Clients, "/clients/<username>/<client_id>")
 api.add_resource(API.Properties, "/properties/<property_id>")
 api.add_resource(API.Agents, "/agents", "/agents/<username>")
 

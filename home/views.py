@@ -37,4 +37,5 @@ def dashboard():
     table, plot = count_clients()
 
     return render_template('home/dashboard.html', plot = file_html(plot, resource), 
-    	table = table[['first_name','id_x']].to_html(classes = "table table-striped"), title="Dashboard")
+    	table = table[['first_name','id_x']].to_html(classes = "table table-striped"),
+        title="Dashboard")
