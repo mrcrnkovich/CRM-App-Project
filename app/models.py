@@ -27,6 +27,10 @@ class User(db.Model, UserMixin):
 	def __repr(self):
 		return '<User: {}>'.format(self.username)
 
+	def json(self):
+		return ({"username":self.username,
+				"email":self.email})
+
 class Client(db.Model):
 
 	__tablename__ = 'clients'
@@ -41,11 +45,17 @@ class Client(db.Model):
 
 	#link to users table
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-	user = db.relationship('User', backref=db.backref('client', lazy=True))
+	user = db.relationship('User', backref=db.backref('Client', lazy=True))
 	
 
 	def __repr__(self):
 		return "<Client {}>".format(self.last_name)
+
+	def json(self):
+		return	({"first_name":self.first_name,
+	    		"last_name":self.last_name,
+	    		"email":self.email,
+	    		"phone":self.phone})
 
 #Load user_login
 @login_manager.user_loader
@@ -77,6 +87,7 @@ class Under_Contract_Trans(db.Model):
 	def __repr__(self):
 		return "<Contract: {}".format(self.location)
 
+
 class Properties_Shown(db.Model):
 	#property id should be trend mls id also
 	Property_ID= db.Column(db.Integer, primary_key=True)
@@ -86,15 +97,23 @@ class Properties_Shown(db.Model):
 
 	def __repr__(self):
 		return "<Property: {}>".format(self.Location)
+
+	def json(self):
+		return	({"Property_ID":self.Property_ID,
+	    		"List_Price":self.List_Price,
+	    		"Location":self.Location,
+	    		"Link":self.Trend_Link})
 """
-class Showings(db.model):
-	client_id
+class Showings(db.Model):
+	__tablename__ = 'showings'
+
+	client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+	client = db.relationship('Client', backref=db.backref('Showings', lazy=True))
 	Property_ID=db.Column()
 	property
-	Feedback
+	Feedback = db.Column(db.String(255))
 	Rating= db.Column(db.Integer)
 
 	def __repr__(self):
-		return "open"
-
+		return f"<Showing: {self.Property_ID}, Rating: {self.Rating}>"
 """

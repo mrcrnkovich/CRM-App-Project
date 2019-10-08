@@ -11,3 +11,5 @@ pandas
 flask_migrate
 flask_bootstrap
 bokeh
+Flask-HTTPAuth
+flask-restful
