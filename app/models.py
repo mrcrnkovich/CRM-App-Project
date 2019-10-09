@@ -25,7 +25,7 @@ class User(db.Model, UserMixin):
 		return check_password_hash(self.password_hash , password)	
 
 	def __repr(self):
-		return '<User: {}>'.format(self.username)
+		return f'<User: {self.username}>'
 
 	def json(self):
 		return ({"username":self.username,
@@ -49,7 +49,7 @@ class Client(db.Model):
 	
 
 	def __repr__(self):
-		return "<Client {}>".format(self.last_name)
+		return f"<Client {self.last_name}, {self.first_name}>"
 
 	def json(self):
 		return	({"first_name":self.first_name,
@@ -57,10 +57,7 @@ class Client(db.Model):
 	    		"email":self.email,
 	    		"phone":self.phone})
 
-#Load user_login
-@login_manager.user_loader
-def load_user(user_id):
-	return User.query.get(int(user_id))
+
 
 class Under_Contract_Trans(db.Model):
 	
@@ -85,10 +82,13 @@ class Under_Contract_Trans(db.Model):
 
 
 	def __repr__(self):
-		return "<Contract: {}".format(self.location)
+		return f"<Contract: {self.location}"
 
 
 class Properties_Shown(db.Model):
+
+	__tablename__= "properties_shown"
+
 	#property id should be trend mls id also
 	Property_ID= db.Column(db.Integer, primary_key=True)
 	List_Price= db.Column(db.Integer)
@@ -96,24 +96,38 @@ class Properties_Shown(db.Model):
 	Trend_Link = db.Column(db.String(128))
 
 	def __repr__(self):
-		return "<Property: {}>".format(self.Location)
+		return f"<Property: {self.Location}>"
 
 	def json(self):
 		return	({"Property_ID":self.Property_ID,
 	    		"List_Price":self.List_Price,
 	    		"Location":self.Location,
 	    		"Link":self.Trend_Link})
-"""
+
 class Showings(db.Model):
+
 	__tablename__ = 'showings'
 
+	showing_id = db.Column(db.Integer, primary_key=True)
 	client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
 	client = db.relationship('Client', backref=db.backref('Showings', lazy=True))
-	Property_ID=db.Column()
-	property
+	Property_ID=db.Column(db.Integer, db.ForeignKey('properties_shown.Property_ID'))
+	properties = db.relationship('Properties_Shown', backref=db.backref("Showings", lazy=True))
 	Feedback = db.Column(db.String(255))
 	Rating= db.Column(db.Integer)
 
 	def __repr__(self):
 		return f"<Showing: {self.Property_ID}, Rating: {self.Rating}>"
-"""
+
+	def json(self):
+		return ({"Showing_id":self.showing_id,
+				"Client_id":self.client_id,
+				"Property_ID":self.Property_ID,
+				"Feedback":self.Feedback,
+				"Rating":self.Rating})
+
+
+#Load user_login
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.get(int(user_id))

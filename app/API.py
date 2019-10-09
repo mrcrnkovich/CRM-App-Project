@@ -6,7 +6,7 @@ import json
 import sqlalchemy
 
 from app import db
-from app.models import Client, User, Properties_Shown
+from app.models import Client, User, Properties_Shown, Showings
 
 
 class clientList(Resource):
@@ -45,12 +45,48 @@ class Clients(Resource):
 		return ({"clients":[client.json() for client in clients]})	
 
 
-class Properties(Resource):
+class Property(Resource):
 
 	def get(self,property_id):
-		print ('works')
 		abort_null_property(property_id)
+		prop = db.session.query(Properties_Shown).filter(Properties_Shown.Property_ID==property_id).first()
+		return prop.json()
+
+	def put(self, property_id):
+		abort_null_property(property_id)		
 		pass
+
+	def delete(self, property_id):
+		abort_null_property(property_id)		
+		pass
+
+class PropertyList(Resource):
+
+	def get(self):
+		prop = db.session.query(Properties_Shown).all()
+		return ({"Properties":[p.json() for p in prop]})
+
+	def post(self):
+		data = json.loads(request.data)
+	    # for prop in data["Properties"]:
+	    # addProperty(username, client) # helper method to sanatize data, then add to database
+	    # update response to conform with general standards.
+		return("sucess"+"\n")
+
+
+class Agents (Resource):
+
+	def get(self):
+		agents = db.session.query(User).all()
+		return ({"Agents":[{"Username":agent.username, "ID":agent.id} for agent in agents]})
+
+# will probably need to join with Properties and clients
+class ShowingList(Resource):
+
+	def get(self):
+		#abort_null_property(property_id)
+		show = db.session.query(Showings).all()
+		return ({"Showings": [s.json() for s in show]})
 
 	def post(self, property_id):
 		pass
@@ -60,22 +96,6 @@ class Properties(Resource):
 
 	def delete(self, property_id):
 		pass
-
-class Agents (Resource):
-
-	def get(self):
-		agents = db.session.query(User).all()
-		return ({"Agents":[{"Username":agent.username, "ID":agent.id} for agent in agents]})
-
-	def post(self):
-		pass
-
-	def put(self, username):
-		pass
-
-	def delete(self, username):
-		pass
-
 
 
 
