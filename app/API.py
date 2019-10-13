@@ -115,6 +115,24 @@ def addClient(username, client):
     print("Client successfully added")
     return
 
+
+# Move this to separate module in Home for adding/modifiying clients
+# will need a method of cleaning/checking the data & catching errors.
+def addProperty(username, property):
+    print("Adding Property:")
+    print(f"Location: {property['Location']}")
+    client = Client(first_name=client['first_name'],
+                            last_name=client['last_name'],
+                            email=client['email'],
+                            phone=client['phone'],
+                            user_id=client['user_id'])
+    db.session.add(client)
+    db.session.commit()
+    print("Client successfully added")
+    return
+
+
+
 """
 # move to global position
 def verify(username, password):
