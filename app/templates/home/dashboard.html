@@ -2,8 +2,8 @@
 
 {% extends "base_logged_in.html" %}
 {% block title %}Dashboard{% endblock %}
-
 {% block body %}
+
 <div class="content-section">
     <div align="Center">
         <h1>Welcome Back {{user.username.title()}}!</h1>
@@ -12,13 +12,13 @@
         <div class="container col-sm-3">
             <p>Nav Panel</p>
             <br>
-            <button type="button" class="btn btn-primary"> Refresh Client List</button>
+            <button type="button" class="btn btn-primary" id="rb"> Refresh Client List</button>
         </div>
         <div class="containter col-lg-10">
             <div>
                 <h3>Here are your most recent showings</h3>
                 <br>
-                <ul class="list-group">
+                <ul class="list-group" id="showings">
                     <li class="list-group-item">Showing 1</li>
                     <li class="list-group-item">Showing 2</li>
                     <li class="list-group-item">Showing 3</li>
@@ -48,23 +48,54 @@
         </div>
         <script>
             $(document).ready(function(){
-                $.get("http://127.0.0.1:5000/api/clients/lola",function(responseText){
-                    data = responseText;
-                    $('#t').empty();
+                function getClients(){
+                    $.get("http://127.0.0.1:5000/api/clients/lola", function(responseText){
 
-                    for(i=0; i<data.clients.length; i++){
-                        $('#t').append('<tr><th scope="row">'+(i+1)+'</th>'
-                            + "<td>"+data.clients[i].first_name+"</td>"
-                            + "<td>" +data.clients[i].last_name+"</td>"
-                            + "<td>" +data.clients[i].email+"</td>"
-                            + "<td> <div class='form-check'><input type='checkbox'"
-                            + "class='form-check-input'></div>"
-                            + '</tr>');
-                    }
+                        data = responseText;
+                        $('#t').empty();
 
-                    console.log($('#t').contents())
+                        for(i=0; i<data.clients.length; i++){
+                            $('#t').append('<tr><th scope="row">'+(i+1)+'</th>'
+                                + "<td>"+data.clients[i].first_name+"</td>"
+                                + "<td>" +data.clients[i].last_name+"</td>"
+                                + "<td>" +data.clients[i].email+"</td>"
+                                + "<td> <div class='form-check'><input type='checkbox'"
+                                + "class='form-check-input'></div>"
+                                + '</tr>');
+                        }
+
+                        console.log($('#t').contents());
+                    });
+                };
+
+
+                function getShowings(){
+                    $.get("http://127.0.0.1:5000/api/showings", function(responseText){
+
+                        data = responseText;
+                        $('#showings').empty();
+
+                        for(i=0; i<data.Showings.length; i++){
+                            $('#showings').append('<li class="list-group-item">'
+                                + "Property ID: "
+                                + data.Showings[i].Property_ID+" | "
+                                + "Feeback: "
+                                + data.Showings[i].Feedback+" | "
+                                + "Rating: "
+                                + data.Showings[i].Rating
+                                + '</li>');
+                        }
+
+                        console.log($('#showings').contents());
+                    });
+                };
+
+                getShowings();
+                getClients();
+
+                $('#rb').click(function(){getShowings()});
+                $('#rb').click(function(){getClients()});
             });
-        });
         </script>
     </div>
 </div>
