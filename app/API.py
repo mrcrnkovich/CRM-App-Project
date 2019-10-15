@@ -1,12 +1,11 @@
 from flask import request
 from flask_restful import abort, Resource
 from flask_restful.reqparse import RequestParser
-import pandas as pd
 import json
 import sqlalchemy
 
-from app import db
-from app.models import Client, User, Properties_Shown, Showings
+from app import db, query
+from app.models import Client, User, Properties, Showings
 
 
 class clientList(Resource):
@@ -14,7 +13,7 @@ class clientList(Resource):
 
 	def get(self, username):
 		abort_null_agent(username)
-		clients = db.session.query(Client).join(User).filter(User.username==username).all()
+		clients = query.getClientsForUser(username)
 		return ({"clients":[client.json() for client in clients]})
 
 	#test for POST data from API to represent a new client
@@ -49,7 +48,7 @@ class Property(Resource):
 
 	def get(self,property_id):
 		abort_null_property(property_id)
-		prop = db.session.query(Properties_Shown).filter(Properties_Shown.Property_ID==property_id).first()
+		prop = db.session.query(Properties).filter(Properties.Property_ID==property_id).first()
 		return prop.json()
 
 	def put(self, property_id):
@@ -63,7 +62,7 @@ class Property(Resource):
 class PropertyList(Resource):
 
 	def get(self):
-		prop = db.session.query(Properties_Shown).all()
+		prop = db.session.query(Properties).all()
 		return ({"Properties":[p.json() for p in prop]})
 
 	def post(self):
@@ -105,13 +104,7 @@ def addClient(username, client):
     print("Adding client:")
     print(f"First Name is: {client['first_name']}")
     print(f"Last Name is: {client['last_name']}")
-    client = Client(first_name=client['first_name'],
-                            last_name=client['last_name'],
-                            email=client['email'],
-                            phone=client['phone'],
-                            user_id=client['user_id'])
-    db.session.add(client)
-    db.session.commit()
+    query.createClient(client)
     print("Client successfully added")
     return
 
@@ -148,6 +141,6 @@ def abort_null_agent(agent):
 
 
 def abort_null_property(property_id):
-	if not db.session.query(Properties_Shown).filter_by(Property_ID=property_id).first():
+	if not db.session.query(Properties).filter_by(Property_ID=property_id).first():
 		abort(404, message=f"Property ID #{property_id} does not exist")
 

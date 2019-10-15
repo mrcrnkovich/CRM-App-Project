@@ -1,7 +1,7 @@
-from app import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from app import db, login_manager
 
 class User(db.Model, UserMixin):
 
@@ -59,16 +59,16 @@ class Client(db.Model):
 
 
 
-class Under_Contract_Trans(db.Model):
+class Contracts(db.Model):
 	
-	__tablename__ = 'under_contract_trans'
+	__tablename__ = 'contracts'
 
 	trans_id = db.Column(db.Integer, primary_key=True)
 	
 	client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
-	client = db.relationship('Client', backref=db.backref('Under_Contract_Trans', lazy=True))
-	#Property_ID = db.Column(db.Integer, 
-	#	db.ForeignKey('properties_shown.Property_ID'))
+	client = db.relationship('Client', backref=db.backref('Contracts', lazy=True))
+	Property_ID=db.Column(db.Integer, db.ForeignKey('properties.Property_ID'))
+	properties = db.relationship('Properties', backref=db.backref("Contracts", lazy=True))
 
 	price = db.Column(db.Integer)
 	location = db.Column(db.String(128))
@@ -96,9 +96,9 @@ class Under_Contract_Trans(db.Model):
 				"closing_day":self.closing_day})
 
 
-class Properties_Shown(db.Model):
+class Properties(db.Model):
 
-	__tablename__= "properties_shown"
+	__tablename__= "properties"
 
 	#property id should be trend mls id also
 	Property_ID= db.Column(db.Integer, primary_key=True)
@@ -122,8 +122,8 @@ class Showings(db.Model):
 	showing_id = db.Column(db.Integer, primary_key=True)
 	client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
 	client = db.relationship('Client', backref=db.backref('Showings', lazy=True))
-	Property_ID=db.Column(db.Integer, db.ForeignKey('properties_shown.Property_ID'))
-	properties = db.relationship('Properties_Shown', backref=db.backref("Showings", lazy=True))
+	Property_ID=db.Column(db.Integer, db.ForeignKey('properties.Property_ID'))
+	properties = db.relationship('Properties', backref=db.backref("Showings", lazy=True))
 	Feedback = db.Column(db.String(255))
 	Rating= db.Column(db.Integer)
 
@@ -138,7 +138,9 @@ class Showings(db.Model):
 				"Rating":self.Rating})
 
 
+
+from app import query
 #Load user_login
 @login_manager.user_loader
 def load_user(user_id):
-	return User.query.get(int(user_id))
+	return query.getUserById(int(user_id))
