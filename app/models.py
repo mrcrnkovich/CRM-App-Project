@@ -48,7 +48,7 @@ class Client(db.Model):
 	user = db.relationship('User', backref=db.backref('Client', lazy=True))
 	
 
-	def __repr__(self):
+	def __repr(self):
 		return f"<Client {self.last_name}, {self.first_name}>"
 
 	def json(self):
@@ -81,8 +81,19 @@ class Under_Contract_Trans(db.Model):
 	closing_day = db.Column(db.Integer)
 
 
-	def __repr__(self):
+	def __repr(self):
 		return f"<Contract: {self.location}"
+
+	def json(self):
+		return ({"trans_id":self.trans_id,
+				"client_id":self.client_id,
+				"price":self.price,
+				"location":self.location,
+				"day_zero":self.day_zero,
+				"deposit_first":self.deposit_first,
+				"deposit_second":self.deposit_second,
+				"bri_day":self.BRI_day,
+				"closing_day":self.closing_day})
 
 
 class Properties_Shown(db.Model):
@@ -95,7 +106,7 @@ class Properties_Shown(db.Model):
 	Location = db.Column(db.String(128))
 	Trend_Link = db.Column(db.String(128))
 
-	def __repr__(self):
+	def __repr(self):
 		return f"<Property: {self.Location}>"
 
 	def json(self):
@@ -116,7 +127,7 @@ class Showings(db.Model):
 	Feedback = db.Column(db.String(255))
 	Rating= db.Column(db.Integer)
 
-	def __repr__(self):
+	def __repr(self):
 		return f"<Showing: {self.Property_ID}, Rating: {self.Rating}>"
 
 	def json(self):
