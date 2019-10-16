@@ -41,15 +41,28 @@ class Clients(Resource):
 		abort_null_agent(username)
 		clients = db.session.query(Client).join(User).filter(User.username==username).\
 			filter(Client.id==client_id).all()
-		return ({"clients":[client.json() for client in clients]})	
+		return ({"clients":[client.json() for client in clients]})
+
+	def put(self, username, client_id):
+		client = query.getClientById(client_id)
+		# update client w/ new data
+		return #sucess or failure	
 
 
 class Property(Resource):
 
-	def get(self,property_id):
-		abort_null_property(property_id)
-		prop = db.session.query(Properties).filter(Properties.Property_ID==property_id).first()
-		return prop.json()
+	def get(self,property_id=None):
+		if property_id:
+			return query.getPropertyById(property_id).json()
+
+		return query.getProperties()
+
+	def post(self):
+		data = json.loads(request.data)
+	    # for prop in data["Properties"]:
+	    # addProperty(username, client) # helper method to sanatize data, then add to database
+	    # update response to conform with general standards.
+		return("sucess"+"\n")
 
 	def put(self, property_id):
 		abort_null_property(property_id)		
@@ -59,25 +72,15 @@ class Property(Resource):
 		abort_null_property(property_id)		
 		pass
 
-class PropertyList(Resource):
-
-	def get(self):
-		prop = db.session.query(Properties).all()
-		return ({"Properties":[p.json() for p in prop]})
-
-	def post(self):
-		data = json.loads(request.data)
-	    # for prop in data["Properties"]:
-	    # addProperty(username, client) # helper method to sanatize data, then add to database
-	    # update response to conform with general standards.
-		return("sucess"+"\n")
-
 
 class Agents (Resource):
 
-	def get(self):
-		agents = db.session.query(User).all()
-		return ({"Agents":[{"Username":agent.username, "ID":agent.id} for agent in agents]})
+	def get(self, username=None):
+		if username:
+			return query.getUserByName(username).json()
+
+		users = query.getUsers()
+		return  ({"Users":[u.json() for u in users]})
 
 # Check for bad arguments
 class ShowingList(Resource):

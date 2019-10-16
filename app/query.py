@@ -19,8 +19,14 @@ def getClientsForUserId(user_id):
 def getClientsForUser(username):
 	return db.session.query(Client).join(User).filter(User.username==username).all()
 
+def getUsers():
+	return db.session.query(User).all()
+
 def getUserById(id):
 	return db.session.query(User).filter(User.id==id).first()
+
+def getUserByName(username):
+	return db.session.query(User).filter(User.username==username).first()
 
 def getUserByEmail(email):
 	return db.session.query(User).filter(User.email==email).first()
@@ -60,6 +66,9 @@ def getShowings():
 def getPropertyById(id):
 	return db.session.query(Properties).filter(Properties.Property_ID==id).first()
 
+def getProperties():
+	prop = db.session.query(Properties).all()
+	return ({"Properties":[p.json() for p in prop]})
 """
 def createClient(client):
 	try:
