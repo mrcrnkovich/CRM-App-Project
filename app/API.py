@@ -79,13 +79,17 @@ class Agents (Resource):
 		agents = db.session.query(User).all()
 		return ({"Agents":[{"Username":agent.username, "ID":agent.id} for agent in agents]})
 
-# will probably need to join with Properties and clients
+# Check for bad arguments
 class ShowingList(Resource):
 
-	def get(self):
+	def get(self, username=None, showing_id=None):
 		#abort_null_property(property_id)
-		show = db.session.query(Showings).all()
-		return ({"Showings": [s.json() for s in show]})
+		if username:
+			return ({"Showings": query.getShowingByUser(username)})
+		elif showing_id:
+			return ({"Showings": query.getShowingById(showing_id)})
+		else:
+			return {"Showings": query.getShowings()}
 
 	def post(self, property_id):
 		pass
@@ -95,7 +99,6 @@ class ShowingList(Resource):
 
 	def delete(self, property_id):
 		pass
-
 
 
 # Move this to separate module in Home for adding/modifiying clients

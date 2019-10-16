@@ -1,0 +1,4 @@
+1,lola,lola@gmail.com,pbkdf2:sha256:150000$yUcDlKpn$a2665f2493b3c2bcdc04410d18e4ed75e7e90732ec76ca124d20eb3867e8cbf1
+2,dad,dad@gmail.com,pbkdf2:sha256:50000$dVeFdJDc$6a9b1b9f52c636c8ce0f4edc8d8db77f45f4464071ed69bcda1e08d65ee586eb
+3,mike,mike@mike.com,pbkdf2:sha256:50000$gwAZoLOr$269268f408ded7b4779df86b5cb5b8df6d6ad15578518ebfd26cff6aa4fada3c
+4,kent.brockman,kent.brockman@yahoo.com,pbkdf2:sha256:150000$IKJLbQTm$b4f3a035eebd4b611fed226e4044367438db7b991ccee1ffcb2b3bddf287d273

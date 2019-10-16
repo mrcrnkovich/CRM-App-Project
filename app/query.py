@@ -2,6 +2,7 @@
 This is a helper module to look up users, clients, showings, properties
 with a consistent query naming convention.
 '''
+from collections import namedtuple
 from app import db
 from app.models import Client, User, Showings, Properties, Contracts
 
@@ -25,18 +26,41 @@ def getUserByEmail(email):
 	return db.session.query(User).filter(User.email==email).first()
 
 def getShowingById(id):
-	return db.session.query(Showings).filter(Showings.showings_id==id).first()
+	s = db.session.query(Showings, Client, User, Properties).\
+		join(Client, Client.id == Showings.client_id).\
+		join(User, Client.user_id==User.id).\
+		join(Properties, Properties.Property_ID==Showings.Property_ID).\
+		filter(Showings.showing_id==id).all()
+	return [{**x[0].json(), **x[1].json(), **x[2].json(), **x[3].json()} for x in s]
 
 def getShowingByUser(username):
-	return db.session.query(Showings).join(Client).join(User).filter(User.username==username).all()
+	s = db.session.query(Showings, Client, Properties).\
+		join(Client, Client.id == Showings.client_id).\
+		join(User, Client.user_id==User.id).\
+		join(Properties, Properties.Property_ID==Showings.Property_ID).\
+		filter(User.username==username).all()
+	return [{**x[0].json(), **x[1].json(), **x[2].json()} for x in s]
+			
 
 def getShowingByClient(client):
-	return db.session.query(Showings).join(Client).filter(Client.id==client).all()
-"""
+	s = db.session.query(Showings, Properties).\
+		join(Client, Client.id == Showings.client_id).\
+		join(User, Client.user_id==User.id).\
+		join(Properties, Properties.Property_ID==Showings.Property_ID).\
+		filter(Client.id==client).all()
+	return [{**x[0].json(), **x[1].json()} for x in s]
+
+def getShowings():
+	s = db.session.query(Showings, Client, User, Properties).\
+		join(Client, Client.id == Showings.client_id).\
+		join(User, Client.user_id==User.id).\
+		join(Properties, Properties.Property_ID==Showings.Property_ID).all()
+	return [{**x[0].json(), **x[1].json(), **x[2].json(), **x[3].json()} for x in s]
+
 def getPropertyById(id):
 	return db.session.query(Properties).filter(Properties.Property_ID==id).first()
 
-
+"""
 def createClient(client):
 	try:
 	    db.session.add(Client(first_name=client['first_name'],

@@ -70,14 +70,17 @@
 
 
                 function getShowings(){
-                    $.get("http://127.0.0.1:5000/api/showings", function(responseText){
+                    $.get("http://127.0.0.1:5000/api/showings/lola", function(responseText){
 
                         data = responseText;
                         $('#showings').empty();
 
                         for(i=0; i<data.Showings.length; i++){
                             $('#showings').append('<li class="list-group-item">'
-                                + "Property ID: "
+                                + "Client: "
+                                + data.Showings[i].last_name+", "
+                                + data.Showings[i].first_name+" | "
+                                + "Property: "
                                 + data.Showings[i].Property_ID+" | "
                                 + "Feeback: "
                                 + data.Showings[i].Feedback+" | "

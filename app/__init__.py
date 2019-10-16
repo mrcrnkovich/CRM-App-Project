@@ -33,7 +33,9 @@ api.add_resource(API.Clients, "/clients/<username>/<client_id>")
 api.add_resource(API.Property, "/properties/<property_id>")
 api.add_resource(API.PropertyList, "/properties")
 api.add_resource(API.Agents, "/agents", "/agents/<username>")
-api.add_resource(API.ShowingList, "/showings")
+api.add_resource(API.ShowingList, "/showings",\
+		 "/showings/<username>",\
+		 "/showings/id/<int:showing_id>")
 
 from admin import admin as admin_blueprint
 crm.register_blueprint(admin_blueprint, url_prefix='/admin')

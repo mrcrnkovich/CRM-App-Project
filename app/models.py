@@ -29,7 +29,7 @@ class User(db.Model, UserMixin):
 
 	def json(self):
 		return ({"username":self.username,
-				"email":self.email})
+				"useremail":self.email})
 
 class Client(db.Model):
 
