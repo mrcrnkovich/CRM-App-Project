@@ -3,6 +3,8 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 
+from typing import Dict, List
+
 class User(db.Model, UserMixin):
 
 	#create User table
@@ -31,6 +33,24 @@ class User(db.Model, UserMixin):
 		return ({"username":self.username,
 				"useremail":self.email})
 
+	Changes = Dict[str, str]
+	def update(self, changes:Changes) -> str:
+
+		try:
+			if "username" in changes.keys():
+				self.username = changes['username']
+
+			if "email" in changes.keys():
+				self.email = changes['email']
+
+			db.session.add(self)
+			db.session.commit()
+		except:
+			return (f"Error loading User: {self.username}"
+					+ " No updates were made to this User.")
+
+		return (f"Successfully updated User: {self.username}")
+
 class Client(db.Model):
 
 	__tablename__ = 'clients'
@@ -56,6 +76,32 @@ class Client(db.Model):
 	    		"last_name":self.last_name,
 	    		"email":self.email,
 	    		"phone":self.phone})
+
+	Changes = Dict[str, str]
+	def update(self, changes:Changes) -> str:
+
+		try:
+			if "first_name" in changes.keys():
+				self.first_name = changes['first_name']
+
+			if "last_name" in changes.keys():
+				self.last_name = changes['last_name']
+
+			if "email" in changes.keys():
+				self.email = changes['email']
+
+			if "phone" in changes.keys():
+				self.phone = changes['phone']
+
+			db.session.add(self)
+			db.session.commit()
+		except:
+			return (f"Error loading client: {self.last_name}"
+					+ f", {self.first_name}. No updates were made"
+					+ " to this client.")
+
+		return (f"Successfully updated client: {self.last_name}"
+				+ f", {self.first_name}")
 
 
 
@@ -114,6 +160,25 @@ class Properties(db.Model):
 	    		"List_Price":self.List_Price,
 	    		"Location":self.Location,
 	    		"Link":self.Trend_Link})
+"""
+	Changes = Dict[str, str]
+	def update(self, changes:Changes) -> str:
+
+		try:
+			if "username" in changes.keys():
+				self.first_name = changes['username']
+
+			if "email" in changes.keys():
+				self.email = changes['email']
+
+			db.session.add(self)
+			db.session.commit()
+		except:
+			return (f"Error loading User: {self.username}"
+					+ " No updates were made to this User.")
+
+		return (f"Successfully updated User: {self.username}")
+"""
 
 class Showings(db.Model):
 
@@ -136,7 +201,23 @@ class Showings(db.Model):
 				"Property_ID":self.Property_ID,
 				"Feedback":self.Feedback,
 				"Rating":self.Rating})
+"""
+	Changes = Dict[str, str]
+	def update(self, changes:Changes) -> str:
 
+		try:
+			if "username" in changes.keys():
+				self.first_name = changes['username']
+
+			if "email" in changes.keys():
+				self.email = changes['email']
+
+		except:
+			return (f"Error loading User: {self.username}"
+					+ " No updates were made to this User.")
+
+		return (f"Successfully updated User: {self.username}")
+"""
 
 
 from app import query
