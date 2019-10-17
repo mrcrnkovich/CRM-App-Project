@@ -26,7 +26,7 @@ class User(db.Model, UserMixin):
 	def check_password(self, password):
 		return check_password_hash(self.password_hash , password)	
 
-	def __repr(self):
+	def __repr__(self):
 		return f'<User: {self.username}>'
 
 	def json(self):
@@ -68,7 +68,7 @@ class Client(db.Model):
 	user = db.relationship('User', backref=db.backref('Client', lazy=True))
 	
 
-	def __repr(self):
+	def __repr__(self):
 		return f"<Client {self.last_name}, {self.first_name}>"
 
 	def json(self):
@@ -127,7 +127,7 @@ class Contracts(db.Model):
 	closing_day = db.Column(db.Integer)
 
 
-	def __repr(self):
+	def __repr__(self):
 		return f"<Contract: {self.location}"
 
 	def json(self):
@@ -152,7 +152,7 @@ class Properties(db.Model):
 	Location = db.Column(db.String(128))
 	Trend_Link = db.Column(db.String(128))
 
-	def __repr(self):
+	def __repr__(self):
 		return f"<Property: {self.Location}>"
 
 	def json(self):
@@ -192,7 +192,7 @@ class Showings(db.Model):
 	Feedback = db.Column(db.String(255))
 	Rating= db.Column(db.Integer)
 
-	def __repr(self):
+	def __repr__(self):
 		return f"<Showing: {self.Property_ID}, Rating: {self.Rating}>"
 
 	def json(self):
