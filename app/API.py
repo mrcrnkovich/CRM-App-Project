@@ -29,9 +29,15 @@ class clientList(Resource):
 	    return("sucess"+"\n")
 
 	def put(self, username):
+		# get client (or clients) by Id, update the included fields
+		# return success, or a list of failed updates.
+
 		pass
 
 	def delete(self, username):
+		# get client(s) be id, remove from db
+		# return success or list of failed deletions.
+
 		pass
 
 class Clients(Resource):

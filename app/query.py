@@ -3,9 +3,13 @@ This is a helper module to look up users, clients, showings, properties
 with a consistent query naming convention.
 '''
 from collections import namedtuple
+from functools import reduce
 from app import db
 from app.models import Client, User, Showings, Properties, Contracts
 
+
+# Do I return only client objects, or only jsons?? Do i add a json wrapper class,
+# or is there a better way to handle this?
 
 def getClientById(id):
 	return db.session.query(Client).filter(Client.id==id).first()
@@ -45,7 +49,7 @@ def getShowingByUser(username):
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(User.username==username).all()
-	return [{**x[0].json(), **x[1].json(), **x[2].json()} for x in s]
+	return [{**x.json(), **y.json(), **z.json()} for x, y, z in s]
 			
 
 def getShowingByClient(client):
@@ -69,7 +73,9 @@ def getPropertyById(id):
 def getProperties():
 	prop = db.session.query(Properties).all()
 	return ({"Properties":[p.json() for p in prop]})
-"""
+
+
+
 def createClient(client):
 	try:
 	    db.session.add(Client(first_name=client['first_name'],
@@ -78,7 +84,31 @@ def createClient(client):
 	                            phone=client['phone'],
 	                            user_id=client['user_id']))
 	    db.session.commit()
-
+	    return ("sucess")
 	except:
-		return
-"""
+		return (f"Could not add client: {client}")
+
+def createShowing(showing):
+	# try add showing to db except return value
+	pass
+
+def createProperty(property):
+	#to do, try add property to db.
+	pass
+
+def updateClient(client):
+	#to do, update client fields to db.
+	pass
+
+def updateShowing(showing):
+	#to do, update client fields to db.
+	pass
+
+def updateProperty(property):
+	#to do, update client fields to db.
+	pass
+
+# may end up using as decorator, not sure yet.
+def jsonListToDict(l):
+	return [reduce(lambda y,z: {**y, **z},
+		list(map(lambda a: a.json(), x))) for x in l]
