@@ -11,6 +11,21 @@ from app.models import Client, User, Showings, Properties, Contracts
 # Do I return only client objects, or only jsons?? Do i add a json wrapper class,
 # or is there a better way to handle this?
 
+
+# decorater to convert the multiple objects returned by joined sql queries to
+# a json.
+def toJson(func):
+        def inner(*args, **kwargs):
+                l = func(*args, **kwargs)
+                type(l)
+                isinstance(l, list)
+                if not isinstance(l, list):
+                        raise TypeError()
+
+                return [reduce(lambda y,z: {**y, **z},
+		    list(map(lambda a: a.json(), x))) for x in l]
+        return inner
+
 def getClientById(id):
 	return db.session.query(Client).filter(Client.id==id).first()
 
@@ -24,7 +39,7 @@ def getClientsForUser(username):
 	return db.session.query(Client).join(User).filter(User.username==username).all()
 
 def getUsers():
-	return db.session.query(User).all()
+        return db.session.query(User).all()
 
 def getUserById(id):
 	return db.session.query(User).filter(User.id==id).first()
@@ -35,37 +50,40 @@ def getUserByName(username):
 def getUserByEmail(email):
 	return db.session.query(User).filter(User.email==email).first()
 
+@toJson
 def getShowingById(id):
-	s = db.session.query(Showings, Client, User, Properties).\
+        s = db.session.query(Showings, Client, User, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(Showings.showing_id==id).all()
-	return [{**x[0].json(), **x[1].json(), **x[2].json(), **x[3].json()} for x in s]
+        return s
 
+@toJson
 def getShowingByUser(username):
 	s = db.session.query(Showings, Client, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(User.username==username).all()
-	return [{**x.json(), **y.json(), **z.json()} for x, y, z in s]
-			
-
+	return s
+		
+@toJson
 def getShowingByClient(client):
 	s = db.session.query(Showings, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(Client.id==client).all()
-	return [{**x[0].json(), **x[1].json()} for x in s]
+	return s
 
+@toJson
 def getShowings():
 	s = db.session.query(Showings, Client, User, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).all()
-	return [{**x[0].json(), **x[1].json(), **x[2].json(), **x[3].json()} for x in s]
+	return s
 
 def getPropertyById(id):
 	return db.session.query(Properties).filter(Properties.Property_ID==id).first()
@@ -108,7 +126,3 @@ def updateProperty(property):
 	#to do, update client fields to db.
 	pass
 
-# may end up using as decorator, not sure yet.
-def jsonListToDict(l):
-	return [reduce(lambda y,z: {**y, **z},
-		list(map(lambda a: a.json(), x))) for x in l]
