@@ -17,8 +17,6 @@ from app.models import Client, User, Showings, Properties, Contracts
 def toJson(func):
         def inner(*args, **kwargs):
                 l = func(*args, **kwargs)
-                type(l)
-                isinstance(l, list)
                 if not isinstance(l, list):
                         raise TypeError()
 
@@ -52,38 +50,34 @@ def getUserByEmail(email):
 
 @toJson
 def getShowingById(id):
-        s = db.session.query(Showings, Client, User, Properties).\
+        return db.session.query(Showings, Client, User, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(Showings.showing_id==id).all()
-        return s
 
 @toJson
 def getShowingByUser(username):
-	s = db.session.query(Showings, Client, Properties).\
+	return db.session.query(Showings, Client, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(User.username==username).all()
-	return s
 		
 @toJson
 def getShowingByClient(client):
-	s = db.session.query(Showings, Properties).\
+	return db.session.query(Showings, Properties).\
 		join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).\
 		filter(Client.id==client).all()
-	return s
 
 @toJson
 def getShowings():
-	s = db.session.query(Showings, Client, User, Properties).\
-		join(Client, Client.id == Showings.client_id).\
+	return db.session.query(Showings, Client, User, Properties).\
+	        join(Client, Client.id == Showings.client_id).\
 		join(User, Client.user_id==User.id).\
 		join(Properties, Properties.Property_ID==Showings.Property_ID).all()
-	return s
 
 def getPropertyById(id):
 	return db.session.query(Properties).filter(Properties.Property_ID==id).first()
@@ -96,23 +90,38 @@ def getProperties():
 
 def createClient(client):
 	try:
-	    db.session.add(Client(first_name=client['first_name'],
+	        db.session.add(Client(first_name=client['first_name'],
 	                            last_name=client['last_name'],
 	                            email=client['email'],
 	                            phone=client['phone'],
 	                            user_id=client['user_id']))
-	    db.session.commit()
-	    return ("sucess")
+	        db.session.commit()
+	        return ("sucess")
 	except:
 		return (f"Could not add client: {client}")
 
 def createShowing(showing):
 	# try add showing to db except return value
-	pass
+	try:
+	        db.session.add(Showings(client_id=showing['client_id'],
+	                            Property_ID=showing['Property_ID'],
+	                            Feedback=showing['Feedback'],
+	                            Rating=showing['Rating']))
+	        db.session.commit()
+	        return ("sucess")
+	except:
+		return (f"Could not add Showing: {showing}")
 
 def createProperty(property):
 	#to do, try add property to db.
-	pass
+        try:
+	        db.session.add(Properties(List_Price=property['List_Price'],
+	                            Location=property['Location'],
+	                            Trend_Link=property['Trend_Link']))
+	        db.session.commit()
+	        return ("sucess")
+        except:
+	        return (f"Could not add Property: {property}")
 
 def updateClient(client):
 	#to do, update client fields to db.
@@ -125,4 +134,13 @@ def updateShowing(showing):
 def updateProperty(property):
 	#to do, update client fields to db.
 	pass
+
+
+def deleteModel(model):
+        try:
+                db.session.delete(model)
+                db.session.commit()
+                return (f'Removed: {model}')
+        except:
+                return (f'Could not remove {model}')
 
