@@ -2,7 +2,7 @@
 This is a Flask based CRM application
 currently being set-up for real-estate agents. :city_sunrise:
 
-### Issues
+### Issues :coffee:
 Work on Front End Design. Considering React.
 
 ### Work in progress :snail:
@@ -11,7 +11,7 @@ Work on Front End Design. Considering React.
   3. Log in process to use API w/o web app.
 
 
-### Completed
+### Completed :beers:
 
   1. [API set-up](https://github.com/mrcrnkovich/CRM-App-Project/blob/master/app/API.py)
   2. [Queries module for access to SQL database](https://github.com/mrcrnkovich/CRM-App-Project/blob/master/app/query.py)
