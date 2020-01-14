@@ -1,6 +1,6 @@
 # CRM-App-Project
 This is a Flask based CRM application
-currently being set-up for real-estate agents.
+currently being set-up for real-estate agents. :city_sunrise:
 
 ### Status
 
