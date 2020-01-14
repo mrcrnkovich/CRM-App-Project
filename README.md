@@ -6,7 +6,11 @@ currently being set-up for real-estate agents. :city_sunrise:
 
 ### Issues
 
-### Work in progress
+### Work in progress :snail:
+  1. Set-up layout of CRM Dashboard.
+    a. Use React for a single page application?
+  2. Cache logged in users.
+  3. Log in process to use API w/o web app.
 
 
 ### Completed
