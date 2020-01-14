@@ -3,7 +3,7 @@ This is a Flask based CRM application
 currently being set-up for real-estate agents. :city_sunrise:
 
 ### Issues
-    Work on Front End Design. Considering React.
+Work on Front End Design. Considering React.
 
 ### Work in progress :snail:
   1. Set-up layout of CRM Dashboard.
