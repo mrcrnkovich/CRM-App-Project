@@ -2,6 +2,25 @@
 This is a Flask based CRM application
 currently being set-up for real-estate agents. :city_sunrise:
 
+## Usage
+  The goal of this app is to allow a real estate team to track clients, properties shown, and properties under contract by agent.
+  Agents should be able to share feedback about properties with other agents.
+  
+### Current Set-up
+  MVP Goal: Basic CRUD app with infrastructure to allow cross sharing of properties and information between agents (users) within a team.
+  
+### Status:
+| # | Project | API | GUI |
+|---|---------|-----|-----|
+|1|Create|||
+|2|Read|:heavy_check_mark:||
+|3|Update|||
+|4|Destroy|||
+  
+### Stretch features: 
+1. Automated emailing to Clients when an important date is arriving (closing, check due, reply to inspection, etc).
+2. Agents can track each touch point with a client and sort clients by least contacted, or most contacted.
+
 ### :coffee: Issues
 Work on Front End Design. Considering React.
 
