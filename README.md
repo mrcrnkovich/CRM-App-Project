@@ -2,6 +2,10 @@
 This is a Flask based CRM application
 currently being set-up for real-estate agents. :city_sunrise:
 
+## Sections
+  1. [Usage](#usage)
+
+
 ## Usage
   The goal of this app is to allow a real estate team to track clients, properties shown, and properties under contract by agent.
   Agents should be able to share feedback about properties with other agents.
