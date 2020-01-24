@@ -4,7 +4,10 @@ currently being set-up for real-estate agents. :city_sunrise:
 
 ## Sections
   1. [Usage](#usage)
-
+  2. [Current Set-Up](#current-set-up)
+  3. [Stretch Features](#stretch-features)
+  4. [Issues](#)
+  5. [Next Up](#)
 
 ## Usage
   The goal of this app is to allow a real estate team to track clients, properties shown, and properties under contract by agent.
