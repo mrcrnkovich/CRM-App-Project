@@ -3,7 +3,7 @@
 from flask import render_template
 from flask_login import login_required, current_user
 from . import home
-
+from app import query
 
 @home.route('/')
 def homepage():
@@ -22,3 +22,4 @@ def dashboard():
 
     return render_template('home/dashboard.html',
         title="Dashboard", user = current_user)
+

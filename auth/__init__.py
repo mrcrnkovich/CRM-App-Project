@@ -1,4 +1,4 @@
-#app/auth/__init_.py
+# app/auth/__init_.py
 
 from flask import Blueprint
 

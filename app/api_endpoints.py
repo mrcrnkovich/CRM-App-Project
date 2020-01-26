@@ -7,26 +7,17 @@ import sqlalchemy
 from app import db, query, http_auth
 from app.models import Client, User, Properties, Showings
 
+from app import API
 
-class clientList:
-        # method to return clients by agent/username
-        
+
+class clientList(Resource):
+        @http_auth.login_required
         def get(self, username):
-                abort_null_agent(username)
-                clients = query.getClientsForUser(username)
-                return ({"clients":[client.json() for client in clients]})
+                return API.clientList.get(username) 
 
-        #test for POST data from API to represent a new client
-        # add put method for clients, need to define format
-
+        @http_auth.login_required
         def post(self, username):
-            
-            data = json.loads(request.data)
-            for client in data["clients"]:
-                addClient(username, client) # helper method to sanatize data, then add to database
-
-            # update response to conform with general standards.
-            return("sucess"+"\n")
+            return API.clientList.post(username)
 
         def put(self, username):
                 # get client (or clients) by Id, update the included fields
@@ -40,7 +31,7 @@ class clientList:
 
                 pass
 
-class Clients:
+class Clients(Resource):
 # method to return clients by agent/username
 
         def get(self, username, client_id):
@@ -55,7 +46,7 @@ class Clients:
                 return #sucess or failure       
 
 
-class Property:
+class Property(Resource):
 
         def get(self,property_id=None):
                 if property_id:
@@ -79,17 +70,12 @@ class Property:
                 pass
 
 
-class Agents:
-
+class Agents(Resource):
+        @http_auth.login_required
         def get(self, username=None):
-                if username:
-                        return query.getUserByName(username).json()
-
-                users = query.getUsers()
-                return  ({"Users":[u.json() for u in users]})
-
+                return API.Agents.get(username)
 # Check for bad arguments
-class ShowingList:
+class ShowingList(Resource):
 
         def get(self, username=None, showing_id=None):
                 #abort_null_property(property_id)

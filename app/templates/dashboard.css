@@ -1,0 +1,26 @@
+header{
+  margin-top: 15px;
+  margin-bottom: 45px;
+
+}
+body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+footer{
+  margin-top: auto;
+  margin-bottom: 15px;
+}
+.col{
+  margin-left: 15px;
+  display: flex;
+  flex-direction: column;
+}
+.form-group{
+  margin-top:15px;
+  margin-bottom:5px;
+}
+#list-center{
+  align-content: center;
+}
