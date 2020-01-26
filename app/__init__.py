@@ -7,11 +7,13 @@ from flask_migrate import Migrate
 from flask_mail import Mail, Message
 from flask_bootstrap import Bootstrap
 from flask_restful import Api
+from flask_httpauth import HTTPBasicAuth
 
 crm = Flask(__name__)
 crm.config.from_object(Config)
 
 api = Api(crm, prefix="/api")
+http_auth = HTTPBasicAuth()
 
 mail = Mail (crm)
 db = SQLAlchemy(crm)
@@ -26,16 +28,17 @@ login_manager.login_view = "auth.login"
 
 from app import models
 from app import dashboard
+from app import api_endpoints
 from app import API
 
-api.add_resource(API.clientList, "/clients/<username>")
-api.add_resource(API.Clients, "/clients/<username>/<client_id>")
-api.add_resource(API.Property, "/properties",\
-				"/properties/<property_id>")
-api.add_resource(API.Agents, "/agents", "/agents/<username>")
-api.add_resource(API.ShowingList, "/showings",\
-		 		"/showings/<username>",\
-		 		"/showings/id/<int:showing_id>")
+#api.add_resource(api_endpoints.clientList, "/clients/<username>")
+# api.add_resource(API.Clients, "/clients/<username>/<client_id>")
+# api.add_resource(API.Property, "/properties",\
+# 				"/properties/<property_id>")
+api.add_resource(api_endpoints.Agents, "/agents", "/agents/<username>")
+# api.add_resource(API.ShowingList, "/showings",\
+#		 		"/showings/<username>",\
+#		 		"/showings/id/<int:showing_id>")
 
 from admin import admin as admin_blueprint
 crm.register_blueprint(admin_blueprint, url_prefix='/admin')
