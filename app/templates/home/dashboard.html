@@ -1,6 +1,7 @@
 <!-- app/templates/home/dashboard.html -->
 
 {% extends "base_logged_in.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 {% block title %}Dashboard{% endblock %}
 {% block body %}
 
@@ -28,7 +29,7 @@
             <br>
             <h3 class="d-inline-block">Here are your clients</h3>
             <br>
-
+            {{ wtf.quick_form(form) }}
             <br>
             <table class="table table-hover table-bordered">
                 <thead class="thead-dark">
