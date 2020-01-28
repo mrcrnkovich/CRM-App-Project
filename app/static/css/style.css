@@ -1,10 +1,9 @@
 /* app/static/css/style.css */
 
-#body-section {
+body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  height: 100%;
 }
 
 
@@ -27,8 +26,14 @@ p.copyright {
 }
 
 .content-section {
-    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
     border-top: 1px solid #e7e7e7;
+}
+
+footer {
+  margin-top: auto;
 }
 
 .footer, .push {

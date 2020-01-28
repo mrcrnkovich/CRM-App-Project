@@ -14,19 +14,34 @@ def homepage():
     return render_template('home/index.html', title="Welcome")
 
 
-@home.route('/dashboard')
+@home.route('/dashboard',methods=['GET', 'POST'])
 @login_required
 def dashboard():
     """
     Render the dashboard template on the /dashboard route
     """
 
-    print(query.getClientsForUser(current_user.username))
-
-    # on submit re-render template using form data and query
-
-
     form = SearchForm()
+    showings = query.getShowingByUser(current_user.username)
+    table = query.getClientsForUser(current_user.username)
+    print(current_user.id)
+    # on submit re-render template using form data and query
+    if form.validate_on_submit():
+    
+        query.createClient({
+            'first_name': form.client_name.data,
+            'last_name': form.client_name.data,
+            'email': form.email.data,
+            'phone': '111-222-3344',
+            'user_id': current_user.id
+            })
+
+        table = query.getClientsForUser(current_user.username)
+
+        return render_template('home/dashboard.html',
+                title="reload", table=table, user=current_user,
+                form=form, showings=showings)
+
     return render_template('home/dashboard.html',
-        title="Dashboard", user=current_user, form=form)
+        title="Dashboard", table=table, user=current_user, form=form)
 

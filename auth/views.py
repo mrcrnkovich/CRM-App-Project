@@ -8,17 +8,16 @@ from app import db, http_auth
 from auth.forms import LoginForm, RegistrationForm
 from app.models import User
 
-
-@auth.route('/auth', methods=['GET', 'POST'])
-def register():
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
 
     # Render the homepage template on the / route
-    form = RegistrationForm()
+    register_form = RegistrationForm()
 
-    if form.validate_on_submit():
-        user = User(username=form.username.data,
-                email=form.email.data)
-        user.password(form.password.data)
+    if register_form.validate_on_submit():
+        user = User(username=register_form.username.data,
+                email=register_form.email.data)
+        user.password(register_form.password.data)
 
         db.session.add(user)
         db.session.commit()
@@ -26,25 +25,21 @@ def register():
 
         return redirect(url_for('auth.login'))
 
-    return render_template('auth/register.html', title="Register", form=form)
-
-
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-
     # on submit, go to database, check user exists, verify password, log-in.
-    if form.validate_on_submit():
+    login_form = LoginForm()
 
-        user = User.query.filter_by(email=form.email.data).first()
+    if login_form.validate_on_submit():
+
+        user = User.query.filter_by(email=login_form.email.data).first()
         if verify_login(user,
-                form.password.data):
+                login_form.password.data):
             login_user(user)
             return redirect(url_for('home.dashboard'))
         else:
             flash('Invalid email or password')
 
-    return render_template('auth/login.html', title="Login", form=form)
+    return render_template('auth/login.html', title="Login",
+                register_form=register_form, login_form=login_form)
 
 
 @http_auth.verify_password
