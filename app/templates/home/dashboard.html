@@ -1,51 +1,27 @@
 <!-- app/templates/home/dashboard.html -->
 
-{% extends "base_logged_in.html" %}
-{% block title %}Dashboard{% endblock %}
-{% block body %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "display_objects.html" import list_showings, table_clients %}
 
-<div class="content-section">
-    <div align="Center">
-        <h1>Welcome Back {{user.username.title()}}!</h1>
-    </div>
+{% extends "base.html" %}
+{% block title %} {{current_user.username.capitalize()}}'s Dashboard{% endblock %}
+{% block content%}
     <div class="container d-inline-flex">
-        <div class="container col-sm-3">
-            <p>Nav Panel</p>
-            <br>
-            <button type="button" class="btn btn-primary" id="rb"> Refresh Client List</button>
-        </div>
         <div class="containter col-lg-10">
+            {{ list_showings(showings) }}
+            <br>
+            <br>
             <div>
-                <h3>Here are your most recent showings</h3>
-                <br>
-                <ul class="list-group" id="showings">
-                    <li class="list-group-item">Showing 1</li>
-                    <li class="list-group-item">Showing 2</li>
-                    <li class="list-group-item">Showing 3</li>
-                    <li class="list-group-item">Showing 4</li>
-                </ul>
+                <h3>Add new client:</h3>
+                {{ wtf.quick_form(form, form_type='horizontal') }}
             </div>
             <br>
             <h3 class="d-inline-block">Here are your clients</h3>
+                {{ table_clients(table) }}
             <br>
-
-            <br>
-            <table class="table table-hover table-bordered">
-                <thead class="thead-dark">
-                    <tr>
-                    <th scope='col'></th>    
-                    <th scope='col'>First Name</th>
-                    <th scope='col'>Last Name</th>
-                    <th scope='col'>Email Name</th>
-                    <th scope='col'>Edit</th>
-                    </tr>
-                </thead>
-                <tbody id="t">
-                </tbody>
-            </table>
         </div>
-        <br>
-        </div>
+      </div>
+      <!--
         <script>
             $(document).ready(function(){
                 function getClients(){
@@ -100,6 +76,5 @@
                 $('#rb').click(function(){getClients()});
             });
         </script>
-    </div>
-</div>
+        -->
 {% endblock %}

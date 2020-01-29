@@ -1,0 +1,17 @@
+{% macro header() -%}
+      <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+        <div class="container topnav">
+            <a class="navbar-brand topnav" 
+                  href="{{ url_for('home.homepage') }}">Real Estate CRM</a>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+                    <li><a href="">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                    <li><a href="{{ url_for('admin.homepage') }}">
+                        Administration</a></li>
+                </ul>
+            </div>
+        </div>
+      </nav>
+{%- endmacro %}

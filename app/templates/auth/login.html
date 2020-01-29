@@ -3,15 +3,18 @@
 
 {% import "bootstrap/wtf.html" as wtf%}
 {% extends "base.html" %}
-{% block title %}Administration{% endblock %}
+{% block title %}Login or Sign-up{% endblock %}
 
-{% block body %}
-<div class="content-section">
-    <div class="center">
+{% block content %}
+  <div class="center">
             <h1>Welcome Back!</h1>
             <h3>Please Log in</h3>
             <br/>
-            {{ wtf.quick_form(form) }}
-    </div>
-</div>
+            {{ wtf.quick_form(login_form, form_type='horizontal') }}
+            <br />
+            <h3>If you have not already signed up
+              please sign-up below.</h3>
+            {{ wtf.quick_form(register_form, form_type='horizontal')}}
+            <br />
+  </div>
 {% endblock %}
