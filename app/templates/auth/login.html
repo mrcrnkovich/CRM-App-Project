@@ -6,17 +6,15 @@
 {% block title %}Login or Sign-up{% endblock %}
 
 {% block content %}
-<div class="content-section">
-    <div class="center">
+  <div class="center">
             <h1>Welcome Back!</h1>
             <h3>Please Log in</h3>
             <br/>
-            {{ wtf.quick_form(login_form) }}
+            {{ wtf.quick_form(login_form, form_type='horizontal') }}
             <br />
             <h3>If you have not already signed up
               please sign-up below.</h3>
-            {{ wtf.quick_form(register_form)}}
+            {{ wtf.quick_form(register_form, form_type='horizontal')}}
             <br />
-    </div>
-</div>
+  </div>
 {% endblock %}

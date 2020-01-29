@@ -11,5 +11,8 @@ class SearchForm(FlaskForm):
 
     email = StringField('Email Address',
                 validators=[DataRequired(), Email()])
-    client_name = StringField('Client Name')
-    submit = SubmitField('Login')
+    first_name = StringField('First Name')
+    last_name = StringField('Last Name')
+    phone = StringField('Phone Number', 
+                validators=[DataRequired()])
+    submit = SubmitField('Add Client')

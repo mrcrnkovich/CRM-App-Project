@@ -1,6 +1,7 @@
 <!-- app/templates/base.html -->
 {% extends 'bootstrap/base.html' %}
-
+{% from 'footer.html' import footer %}
+{% from 'header.html' import header %}
 
     {% block title %}
         {{ title }} | Real Estate CRM
@@ -13,53 +14,12 @@
     {% endblock %}
 
     {% block body %}
-      {% block nav %}
-      <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <a class="navbar-brand topnav" 
-                  href="{{ url_for('home.homepage') }}">Real Estate CRM</a>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
-                    <li><a href="">Register</a></li>
-                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    <li><a href="{{ url_for('admin.homepage') }}">
-                        Administration</a></li>
-                </ul>
-            </div>
+        {% block nav %}
+            {{ header() }}
+        {% endblock %}
+        <div class="container content-section">
+          {% block content %}
+          {% endblock %}
         </div>
-      </nav>
-      {% endblock %}
-      <div class="container content-section">
-      {% block content %}
-      {% endblock %}
-      </div>
-      <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
-                        <li><a href="{{ url_for('home.homepage') }}">
-                            Home
-                        </a></li>
-                        <li class="footer-menu-divider">⋅</li>
-                        <li><a href="">
-                            Register
-                        </a></li>
-                        <li class="footer-menu-divider">⋅</li>
-                        <li><a href="{{ url_for('auth.login') }}">
-                            Login
-                        </a></li>
-                        <li class="footer-menu-divider">⋅</li>
-                        <li><a href="{{ url_for('admin.homepage') }}">
-                            Administration
-                        </a></li>
-                    </ul>
-                    <p class="copyright text-muted small">
-                      Copyright mrc inc© 2019. All Rights Reserved
-                    </p>
-                </div>
-            </div>
-        </div>
-      </footer>
-  {% endblock %}
+      {{ footer() }}
+    {% endblock %}
