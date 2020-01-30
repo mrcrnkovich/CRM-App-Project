@@ -4,7 +4,7 @@ from flask import render_template
 from flask_login import login_required, current_user
 from . import home
 from app import query
-from home.forms import SearchForm
+from home.forms import AddClientForm, AddPropertyForm 
 
 @home.route('/')
 def homepage():
@@ -17,17 +17,17 @@ def homepage():
 @home.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    """:
+    """
     Render the dashboard template on the /dashboard route
     """
 
-    form = SearchForm()
+    client_form = AddClientForm()
+    prop_form = AddPropertyForm()
     showings = query.getShowingByUser(current_user.username)
     table = query.getClientsForUser(current_user.username)
-    print(showings)
-    # on submit re-render template using form data and query
     
-    if form.validate_on_submit():
+    # on submit re-render template using form data and query
+    if client_form.validate_on_submit():
 
         query.createClient({
             'first_name': form.first_name.data,
@@ -44,5 +44,6 @@ def dashboard():
                 form=form, showings=showings)
 
     return render_template('home/dashboard.html',
-        title="Dashboard", table=table, user=current_user, form=form)
+        title="Dashboard", table=table, user=current_user,
+        showings=showings, client_form=client_form, prop_form=prop_form)
 

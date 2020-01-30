@@ -1,11 +1,11 @@
 # app/auth/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import  StringField, SubmitField, ValidationError
+from wtforms import  IntegerField, StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo
 
 
-class SearchForm(FlaskForm):
+class AddClientForm(FlaskForm):
 
     # Log users in
 
@@ -16,3 +16,16 @@ class SearchForm(FlaskForm):
     phone = StringField('Phone Number', 
                 validators=[DataRequired()])
     submit = SubmitField('Add Client')
+
+class AddShowingForm(FlaskForm):
+    pass
+
+class AddPropertyForm(FlaskForm):
+    prop_id = IntegerField("Property ID",
+                validators=[DataRequired()])
+    list_price = IntegerField("List Price",
+                validators=[DataRequired()])
+    location = StringField("Property Location",
+                validators=[DataRequired()])
+    trend_link = StringField("Property Link")
+    submit = SubmitField("Add Property")
