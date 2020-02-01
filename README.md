@@ -30,6 +30,7 @@ currently being set-up for real-estate agents. :city_sunrise:
 
 ### :coffee: Issues
 Work on Front End Design. Considering React.
+Currently breaks when add same client twice.
 
 ### :snail: Next Up
   1. Set-up layout of CRM Dashboard.
