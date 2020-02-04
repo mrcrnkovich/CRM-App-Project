@@ -1,4 +1,4 @@
-# app/auth/forms.py
+# home/forms.py
 
 from flask_wtf import FlaskForm
 from wtforms import  IntegerField, StringField, SubmitField, ValidationError
@@ -18,7 +18,14 @@ class AddClientForm(FlaskForm):
     submit = SubmitField('Add Client')
 
 class AddShowingForm(FlaskForm):
-    pass
+   
+    # Form set-up to add new showings
+
+    client_id = IntegerField('Client ID')
+    Property_ID = IntegerField('Property ID')
+    Feedback = StringField('Feedback') 
+    Rating =  IntegerField('Rating')
+    submit = SubmitField('Submit')
 
 class AddPropertyForm(FlaskForm):
     prop_id = IntegerField("Property ID",
@@ -29,3 +36,4 @@ class AddPropertyForm(FlaskForm):
                 validators=[DataRequired()])
     trend_link = StringField("Property Link")
     submit = SubmitField("Add Property")
+

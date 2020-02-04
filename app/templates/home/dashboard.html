@@ -1,22 +1,31 @@
-<!-- a:pp/templates/home/dashboard.html -->
+<!-- app/templates/home/dashboard.html -->
 
 {% import "bootstrap/wtf.html" as wtf %}
 {% from "display_objects.html" import list_showings, table_clients %}
+{% from "header.html" import header %}
 
 {% extends "base.html" %}
 {% block title %} {{current_user.username.capitalize()}}'s Dashboard{% endblock %}
+{% block nav %} {{ header(logged_in=True) }} {% endblock %}
 {% block content%}
   <div class="container d-inline-flex">
     <div class="containter col-lg-10">
       {{ list_showings(showings) }}
       <br>
-      <br>
       <div class="container">
         <div class="row">
-        <h3>Add new client:</h3>
-        {{ wtf.quick_form(client_form, form_type='horizontal') }}
-        <h3>Add new property:</h3>
-        {{ wtf.quick_form(prop_form, form_type='horizontal') }}
+          <div class="col">
+            <h3>Add new client:</h3>
+            {{ wtf.quick_form(client_form, form_type='horizontal') }}
+          </div>
+          <div class="col">
+            <h3>Add new property:</h3>
+            {{ wtf.quick_form(prop_form, form_type='horizontal') }}
+          </div>
+          <div class="col">
+            <h3>Add new showing:</h3>
+            {{ wtf.quick_form(showing_form, form_type='horizontal') }}
+          </div>
         </div>
       </div>
       <br>
@@ -24,5 +33,5 @@
       {{ table_clients(table) }}
       <br>
     </div>
-  </div>
+  </div>    
 {% endblock %}

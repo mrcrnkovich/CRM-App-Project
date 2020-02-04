@@ -15,7 +15,7 @@
 
     {% block body %}
         {% block nav %}
-            {{ header() }}
+        {{ header(logged_in=False) }}
         {% endblock %}
         <div class="container content-section">
           {% block content %}

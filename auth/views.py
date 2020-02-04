@@ -41,6 +41,12 @@ def login():
     return render_template('auth/login.html', title="Login",
                 register_form=register_form, login_form=login_form)
 
+@auth.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home.homepage'))
+
 
 @http_auth.verify_password
 def verify_password(username, password):
