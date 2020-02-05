@@ -4,7 +4,8 @@ from flask import render_template
 from flask_login import login_required, current_user
 from . import home
 from app import query
-from home.forms import AddClientForm, AddShowingForm, AddPropertyForm 
+from home.forms import (AddClientForm, AddShowingForm, AddPropertyForm,
+AddSearchForm)
 
 @home.route('/')
 def homepage():
@@ -76,4 +77,47 @@ def dashboard():
         title="Dashboard", table=table, user=current_user,
         showings=showings, showing_form=showing_form,
         client_form=client_form, prop_form=prop_form)
+
+
+@home.route('/update/client', methods=['GET', 'POST'])
+@login_required
+def updates():
+    
+    client_form = AddClientForm()
+    search_form = AddSearchForm()
+
+    if search_form.validate_on_submit():
+
+        client = query.getClientById(search_form.search.data)
+        
+        if client:
+            client_form.first_name.data = client.first_name
+            client_form.last_name.data = client.last_name
+            client_form.email.data = client.email
+            client_form.phone.data = client.phone
+            current_user.id = client.id
+
+        return render_template('home/update.html',
+                    form=client_form, search=search_form)
+
+   
+    if client_form.validate_on_submit():
+
+        query.updateClient({
+            'first_name': client_form.first_name.data,
+            'last_name': client_form.last_name.data,
+            'email': client_form.email.data,
+            'phone': client_form.phone.data,
+            'user_id': current_user.id
+            })
+
+        return render_template('home/update.html',
+                    form=client_form, search=search_form)
+
+
+
+
+
+    return render_template('home/update.html',
+                form=client_form, search=search_form)
 

@@ -37,3 +37,7 @@ class AddPropertyForm(FlaskForm):
     trend_link = StringField("Property Link")
     submit = SubmitField("Add Property")
 
+class AddSearchForm(FlaskForm):
+    search = StringField("Search")
+    submit = SubmitField("Submit")
+
