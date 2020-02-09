@@ -12,9 +12,9 @@ from app.models import User
 def login():
 
     # Render the homepage template on the / route
-    register_form = RegistrationForm()
+    register_form = RegistrationForm(prefix="register_form")
 
-    if register_form.validate_on_submit():
+    if register_form.validate_on_submit() and register_form.submit.data:
         user = User(username=register_form.username.data,
                 email=register_form.email.data)
         user.password(register_form.password.data)
@@ -26,9 +26,9 @@ def login():
         return redirect(url_for('auth.login'))
 
     # on submit, go to database, check user exists, verify password, log-in.
-    login_form = LoginForm()
+    login_form = LoginForm(prefix='login_form')
 
-    if login_form.validate_on_submit():
+    if login_form.validate_on_submit() and login_form.submit.data:
 
         user = User.query.filter_by(email=login_form.email.data).first()
         if verify_login(user,

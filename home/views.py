@@ -1,6 +1,6 @@
 # app/home/views.py
 
-from flask import render_template
+from flask import render_template, request, redirect, session
 from flask_login import login_required, current_user
 from . import home
 from app import query
@@ -27,7 +27,7 @@ def dashboard():
     showing_form = AddShowingForm()
     showings = query.getShowingByUser(current_user.username)
     table = query.getClientsForUser(current_user.username)
-
+    '''
     if prop_form.validate_on_submit():
         query.createProperty({
             'List_Price': prop_form.list_price.data,
@@ -42,11 +42,12 @@ def dashboard():
     
     if showing_form.validate_on_submit():
         
-        query.createShowing({
+        r = query.createShowing({
             'client_id': showing_form.client_id.data,
             'Property_ID': showing_form.Property_ID.data,
             'Feedback': showing_form.Feedback.data,
             'Rating': showing_form.Rating.data})
+        print(r)
 
         showings = query.getShowingByUser(current_user.username)
 
@@ -54,7 +55,7 @@ def dashboard():
                 title="reload", table=table, user=current_user,
                 client_form=client_form, showings=showings,
                 showing_form=showing_form, prop_form=prop_form)
-
+    '''
     # on submit re-render template using form data and query
     if client_form.validate_on_submit():
 
@@ -83,41 +84,33 @@ def dashboard():
 @login_required
 def updates():
     
-    client_form = AddClientForm()
-    search_form = AddSearchForm()
+    client_form= AddClientForm(prefix='client_form')
+    search_form = AddSearchForm(prefix='search_form')
 
-    if search_form.validate_on_submit():
-
-        client = query.getClientById(search_form.search.data)
+    if search_form.validate_on_submit() and search_form.submit.data:
         
-        if client:
-            client_form.first_name.data = client.first_name
-            client_form.last_name.data = client.last_name
-            client_form.email.data = client.email
-            client_form.phone.data = client.phone
-            current_user.id = client.id
-
-        return render_template('home/update.html',
-                    form=client_form, search=search_form)
-
+        session['client'] = query.getClientById(search_form.search.data).json()
+        return redirect('client')
    
-    if client_form.validate_on_submit():
-
-        query.updateClient({
+    if client_form.validate_on_submit() and client_form.submit.data: 
+        
+        query.updateClient(session['client']['id'], {
             'first_name': client_form.first_name.data,
             'last_name': client_form.last_name.data,
             'email': client_form.email.data,
             'phone': client_form.phone.data,
-            'user_id': current_user.id
             })
-
-        return render_template('home/update.html',
-                    form=client_form, search=search_form)
-
-
-
-
-
+       
+        session['client'] = None
+        return redirect('client') 
+    
+    if session.get('client'):
+        client = session['client']
+        client_form.first_name.data = client['first_name']
+        client_form.last_name.data = client['last_name']
+        client_form.email.data = client['email']
+        client_form.phone.data = client['phone']
+ 
     return render_template('home/update.html',
                 form=client_form, search=search_form)
 

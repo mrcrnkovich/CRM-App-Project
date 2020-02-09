@@ -90,11 +90,13 @@ def getProperties():
 
 def createClient(client):
         try:
-                db.session.add(Client(first_name=client['first_name'],
+                c = (Client(first_name=client['first_name'],
                                     last_name=client['last_name'],
                                     email=client['email'],
                                     phone=client['phone'],
                                     user_id=client['user_id']))
+                print(c)
+                db.session.add(c)
                 db.session.commit()
                 return ("sucess")
         except:
@@ -123,9 +125,16 @@ def createProperty(property):
         except:
                 return (f"Could not add Property: {property}")
 
-def updateClient(client):
+def updateClient(client_id, update):
         #to do, update client fields to db.
-        pass
+        client = getClientById(client_id)
+        client.update(update)
+        client.first_name = update['first_name']
+        client.last_name = update['last_name']
+        client.email = update['email']
+        client.phone = update['phone']
+        db.session.commit()
+        return
 
 def updateShowing(showing):
         #to do, update client fields to db.
