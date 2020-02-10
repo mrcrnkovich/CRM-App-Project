@@ -6,10 +6,12 @@
 {% extends "base.html" %}
 {% block title %} Update Clients{% endblock %}
 {% block content %}
+<div class="container content-section">
   <div>
     {{ wtf.quick_form(search) }}
   </div>
   <div>
     {{ wtf.quick_form(form) }}
   </div>
+<div>
 {% endblock %}

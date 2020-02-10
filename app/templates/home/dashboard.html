@@ -8,35 +8,26 @@
 {% block title %} {{current_user.username.capitalize()}}'s Dashboard{% endblock %}
 {% block nav %} {{ header(logged_in=True) }} {% endblock %}
 {% block content%}
-  <div class="container d-inline-flex">
-    <div class="containter col-lg-10">
+  <div class="container" id="dashboard">
       {{ list_showings(showings) }}
       <br>
-      <div class="container">
-        <div class="form-row">
-          <div class="col">
+      <div class="form-row">
+          <div class="center">
             <h3>Add new client:</h3>
             {{ wtf.quick_form(client_form, form_type='horizontal') }}
           </div>
-          <div class="col">
+          <div class="center">
             <h3>Add new property:</h3>
-            
-            <form method="POST" class="form-control" enctype="multipart/form-data">
-              {{prop_form.prop_id.label}} {{prop_form.prop_id}}
-              <input type="submit" value="Submit">
-            </form>
-            <!--{{ wtf.quick_form(prop_form, form_type='horizontal') }}-->
+            {{ wtf.quick_form(prop_form, form_type='horizontal') }}
           </div>
-          <div class="col">
+          <div class="center">
             <h3>Add new showing:</h3>
             {{ wtf.quick_form(showing_form, form_type='horizontal') }}
           </div>
         </div>
-      </div>
       <br>
-      <h3 class="d-inline-block">Here are your clients</h3>
+      <h3 class="center">Here are your clients</h3>
       {{ table_clients(table) }}
       <br>
-    </div>
   </div>    
 {% endblock %}

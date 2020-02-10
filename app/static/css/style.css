@@ -14,11 +14,21 @@ footer {
   justify-content: center;
   background-color: #f8f8f8; 
 }
+
+#dashboard{
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: hsla(194, 100%, 85%, 0.1);
+}
+
 .form-row{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+
 p.copyright {
   margin: 15px 0 0;
   margin-bottom: 5px;
@@ -37,11 +47,9 @@ p.copyright {
 .content-section {
   display: flex;
   flex-direction: column;
-  padding: 50px;
   border-top: 1px solid #e7e7e7;
-  min-height:80vh;
+  min-height:85vh;
 }
-
 
 #foot{
   display: flex;
@@ -55,7 +63,6 @@ ol, ul{
   margin-bottom: 15px;
 }
 
-
 .intro-divider {
     width: 400px;
     border-top: 1px solid #f8f8f8;
@@ -63,8 +70,10 @@ ol, ul{
 }
 
 .intro-background{
-    padding-top: 50px;
-    padding-bottom: 50px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 50px;
+    margin-right: 50px;
     text-align: center;
     color: #f8f8f8;
     background: url(../img/intro-bg.jpg) no-repeat center center;

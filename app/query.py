@@ -8,10 +8,6 @@ from app import db
 from app.models import Client, User, Showings, Properties, Contracts
 
 
-# Do I return only client objects, or only jsons?? Do i add a json wrapper class,
-# or is there a better way to handle this?
-
-
 # decorater to convert the multiple objects returned by joined sql queries to
 # a json.
 def toJson(func):
@@ -48,13 +44,8 @@ def getUserByName(username):
 def getUserByEmail(email):
         return db.session.query(User).filter(User.email==email).first()
 
-@toJson
 def getShowingById(id):
-        return db.session.query(Showings, Client, User, Properties).\
-                join(Client, Client.id == Showings.client_id).\
-                join(User, Client.user_id==User.id).\
-                join(Properties, Properties.Property_ID==Showings.Property_ID).\
-                filter(Showings.showing_id==id).all()
+        return db.session.query(Showings).filter(Showings.showing_id==id).first()
 
 @toJson
 def getShowingByUser(username):
@@ -126,24 +117,13 @@ def createProperty(property):
                 return (f"Could not add Property: {property}")
 
 def updateClient(client_id, update):
-        #to do, update client fields to db.
-        client = getClientById(client_id)
-        client.update(update)
-        client.first_name = update['first_name']
-        client.last_name = update['last_name']
-        client.email = update['email']
-        client.phone = update['phone']
-        db.session.commit()
-        return
+        return getClientById(client_id).update(update)
 
-def updateShowing(showing):
-        #to do, update client fields to db.
-        pass
+def updateShowing(showing_id, update):
+        return getShowingById(showing_id).update(update)
 
-def updateProperty(property):
-        #to do, update client fields to db.
-        pass
-
+def updateProperty(property_id, update):
+        return getPropertyById(property_id).update(update)
 
 def deleteModel(model):
         try:

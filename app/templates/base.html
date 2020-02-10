@@ -14,12 +14,14 @@
     {% endblock %}
 
     {% block body %}
-        {% block nav %}
+      
+      {% block nav %}
         {{ header(logged_in=False) }}
-        {% endblock %}
-        <div class="container content-section">
-          {% block content %}
-          {% endblock %}
-        </div>
+      {% endblock %}
+      
+      {% block content %}
+      {% endblock %}
+      
       {{ footer() }}
+    
     {% endblock %}
