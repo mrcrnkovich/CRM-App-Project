@@ -75,7 +75,8 @@ class Client(db.Model):
         return ({"first_name": self.first_name,
                 "last_name": self.last_name,
                 "email": self.email,
-                "phone": self.phone})
+                "phone": self.phone,
+                "id": self.id})
 
     Changes = Dict[str, str]
     def update(self, changes: Changes) -> str:

@@ -1,9 +1,19 @@
-{% macro header() -%}
+{% macro header(logged_in) -%}
       <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <a class="navbar-brand topnav" 
-                  href="{{ url_for('home.homepage') }}">Real Estate CRM</a>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="container">
+            <a class="navbar-brand" 
+                  href="{{ url_for('home.homepage') }}">Real Estate CRM
+            </a>
+            {% if logged_in %}
+            <div class="container"> 
+                <ul class="nav navbar-nav navbar-right">
+                  <li><a href="{{ url_for('home.dashboard') }}">Home</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    <li><a href="">API Documentation</a></li>
+                </ul>
+            </div>
+            {% else %}
+            <div class="container"> 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
                     <li><a href="">Register</a></li>
@@ -12,6 +22,7 @@
                         Administration</a></li>
                 </ul>
             </div>
+            {% endif %}
         </div>
       </nav>
 {%- endmacro %}

@@ -2,79 +2,32 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 {% from "display_objects.html" import list_showings, table_clients %}
+{% from "header.html" import header %}
 
 {% extends "base.html" %}
 {% block title %} {{current_user.username.capitalize()}}'s Dashboard{% endblock %}
+{% block nav %} {{ header(logged_in=True) }} {% endblock %}
 {% block content%}
-    <div class="container d-inline-flex">
-        <div class="containter col-lg-10">
-            {{ list_showings(showings) }}
-            <br>
-            <br>
-            <div>
-                <h3>Add new client:</h3>
-                {{ wtf.quick_form(form, form_type='horizontal') }}
-            </div>
-            <br>
-            <h3 class="d-inline-block">Here are your clients</h3>
-                {{ table_clients(table) }}
-            <br>
+  <div class="container" id="dashboard">
+      {{ list_showings(showings) }}
+      <br>
+      <div class="form-row">
+          <div class="center">
+            <h3>Add new client:</h3>
+            {{ wtf.quick_form(client_form, form_type='horizontal') }}
+          </div>
+          <div class="center">
+            <h3>Add new property:</h3>
+            {{ wtf.quick_form(prop_form, form_type='horizontal') }}
+          </div>
+          <div class="center">
+            <h3>Add new showing:</h3>
+            {{ wtf.quick_form(showing_form, form_type='horizontal') }}
+          </div>
         </div>
-      </div>
-      <!--
-        <script>
-            $(document).ready(function(){
-                function getClients(){
-                    $.get("http://127.0.0.1:5000/api/clients/lola", function(responseText){
-
-                        data = responseText;
-                        $('#t').empty();
-
-                        for(i=0; i<data.clients.length; i++){
-                            $('#t').append('<tr><th scope="row">'+(i+1)+'</th>'
-                                + "<td>"+data.clients[i].first_name+"</td>"
-                                + "<td>" +data.clients[i].last_name+"</td>"
-                                + "<td>" +data.clients[i].email+"</td>"
-                                + "<td> <div class='form-check'><input type='checkbox'"
-                                + "class='form-check-input'></div>"
-                                + '</tr>');
-                        }
-
-                        console.log($('#t').contents());
-                    });
-                };
-
-
-                function getShowings(){
-                    $.get("http://127.0.0.1:5000/api/showings/lola", function(responseText){
-
-                        data = responseText;
-                        $('#showings').empty();
-
-                        for(i=0; i<data.Showings.length; i++){
-                            $('#showings').append('<li class="list-group-item">'
-                                + "Client: "
-                                + data.Showings[i].last_name+", "
-                                + data.Showings[i].first_name+" | "
-                                + "Property: "
-                                + data.Showings[i].Property_ID+" | "
-                                + "Feeback: "
-                                + data.Showings[i].Feedback+" | "
-                                + "Rating: "
-                                + data.Showings[i].Rating
-                                + '</li>');
-                        }
-
-                        console.log($('#showings').contents());
-                    });
-                };
-
-                getShowings();
-                getClients();
-
-                $('#rb').click(function(){getShowings()});
-                $('#rb').click(function(){getClients()});
-            });
-        </script>
-        -->
+      <br>
+      <h3 class="center">Here are your clients</h3>
+      {{ table_clients(table) }}
+      <br>
+  </div>    
 {% endblock %}

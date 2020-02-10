@@ -8,18 +8,20 @@
     {% endblock %}
 
     {% block styles %}
-        {{ super()}}
+        {{ super() }}
         <link href="{{ url_for('static', filename='css/style.css') }}"
           rel="stylesheet">
     {% endblock %}
 
     {% block body %}
-        {% block nav %}
-            {{ header() }}
-        {% endblock %}
-        <div class="container content-section">
-          {% block content %}
-          {% endblock %}
-        </div>
+      
+      {% block nav %}
+        {{ header(logged_in=False) }}
+      {% endblock %}
+      
+      {% block content %}
+      {% endblock %}
+      
       {{ footer() }}
+    
     {% endblock %}

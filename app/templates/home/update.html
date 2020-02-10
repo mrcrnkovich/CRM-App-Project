@@ -1,0 +1,17 @@
+<!-- app/templates/home/update.html -->
+
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "header.html" import header %}
+
+{% extends "base.html" %}
+{% block title %} Update Clients{% endblock %}
+{% block content %}
+<div class="container content-section">
+  <div>
+    {{ wtf.quick_form(search) }}
+  </div>
+  <div>
+    {{ wtf.quick_form(form) }}
+  </div>
+<div>
+{% endblock %}
