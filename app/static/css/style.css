@@ -7,15 +7,16 @@ body {
 }
 
 footer {
-  margin-top: auto;
   display: flex;
+  position: sticky;
+  bottom: 0;
   flex-direction: row;
   align-items: flex-start;
   justify-content: center;
   background-color: #f8f8f8; 
 }
 
-#dashboard{
+.dashboard{
   display: flex;
   align-items: stretch;
   flex-direction: column;

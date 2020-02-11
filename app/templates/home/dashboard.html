@@ -8,7 +8,7 @@
 {% block title %} {{current_user.username.capitalize()}}'s Dashboard{% endblock %}
 {% block nav %} {{ header(logged_in=True) }} {% endblock %}
 {% block content%}
-  <div class="container" id="dashboard">
+  <div class="container dashboard">
       {{ list_showings(showings) }}
       <br>
       <div class="form-row">
