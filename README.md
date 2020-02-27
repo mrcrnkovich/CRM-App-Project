@@ -19,9 +19,9 @@ currently being set-up for real-estate agents. :city_sunrise:
 ### Status:
 | # | Project | API | GUI |
 |---|---------|-----|-----|
-|1|Create|||
-|2|Read|:heavy_check_mark:||
-|3|Update|||
+|1|Create||:heavy_check_mark:|
+|2|Read|:heavy_check_mark:|:heavy_check_mark:|
+|3|Update||:heavy_check_mark:|
 |4|Destroy|||
   
 ### Stretch features: 
