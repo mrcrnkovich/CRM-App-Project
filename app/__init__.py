@@ -15,7 +15,7 @@ crm.config.from_object(Config)
 api = Api(crm, prefix="/api")
 http_auth = HTTPBasicAuth()
 
-mail = Mail (crm)
+mail = Mail(crm)
 db = SQLAlchemy(crm)
 migrate = Migrate(crm, db)
 Bootstrap(crm)
@@ -31,21 +31,23 @@ from app import dashboard
 from app import api_endpoints
 from app import API
 
-#api.add_resource(api_endpoints.clientList, "/clients/<username>")
+# api.add_resource(api_endpoints.clientList, "/clients/<username>")
 # api.add_resource(API.Clients, "/clients/<username>/<client_id>")
 # api.add_resource(API.Property, "/properties",\
 # 				"/properties/<property_id>")
 api.add_resource(api_endpoints.Agents, "/agents", "/agents/<username>")
 # api.add_resource(API.ShowingList, "/showings",\
-#		 		"/showings/<username>",\
-#		 		"/showings/id/<int:showing_id>")
+# 		 		"/showings/<username>",\
+# 		 		"/showings/id/<int:showing_id>")
 
 from admin import admin as admin_blueprint
-crm.register_blueprint(admin_blueprint, url_prefix='/admin')
+
+crm.register_blueprint(admin_blueprint, url_prefix="/admin")
 
 from auth import auth as auth_blueprint
+
 crm.register_blueprint(auth_blueprint)
 
 from home import home as home_blueprint
-crm.register_blueprint(home_blueprint)
 
+crm.register_blueprint(home_blueprint)

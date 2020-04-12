@@ -8,44 +8,50 @@ from app import db, http_auth
 from auth.forms import LoginForm, RegistrationForm
 from app.models import User
 
-@auth.route('/login', methods=['GET', 'POST'])
+
+@auth.route("/login", methods=["GET", "POST"])
 def login():
 
     # Render the homepage template on the / route
     register_form = RegistrationForm(prefix="register_form")
 
     if register_form.validate_on_submit() and register_form.submit.data:
-        user = User(username=register_form.username.data,
-                email=register_form.email.data)
+        user = User(
+            username=register_form.username.data, email=register_form.email.data
+        )
         user.password(register_form.password.data)
 
         db.session.add(user)
         db.session.commit()
-        flash('You are registered')
+        flash("You are registered")
 
-        return redirect(url_for('auth.login'))
+        return redirect(url_for("auth.login"))
 
     # on submit, go to database, check user exists, verify password, log-in.
-    login_form = LoginForm(prefix='login_form')
+    login_form = LoginForm(prefix="login_form")
 
     if login_form.validate_on_submit() and login_form.submit.data:
 
         user = User.query.filter_by(email=login_form.email.data).first()
-        if verify_login(user,
-                login_form.password.data):
+        if verify_login(user, login_form.password.data):
             login_user(user)
-            return redirect(url_for('home.dashboard'))
+            return redirect(url_for("home.dashboard"))
         else:
-            flash('Invalid email or password')
+            flash("Invalid email or password")
 
-    return render_template('auth/login.html', title="Login",
-                register_form=register_form, login_form=login_form)
+    return render_template(
+        "auth/login.html",
+        title="Login",
+        register_form=register_form,
+        login_form=login_form,
+    )
+
 
 @auth.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home.homepage'))
+    return redirect(url_for("home.homepage"))
 
 
 @http_auth.verify_password
@@ -55,4 +61,4 @@ def verify_password(username, password):
 
 
 def verify_login(user, password):
-    return (user and user.check_password(password))
+    return user and user.check_password(password)

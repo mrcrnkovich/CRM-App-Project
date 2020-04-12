@@ -13,3 +13,4 @@ flask_bootstrap
 bokeh
 Flask-HTTPAuth
 flask-restful
+black

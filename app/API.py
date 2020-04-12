@@ -1,113 +1,110 @@
-from flask import request
-from flask_restful import abort, Resource
-from flask_restful.reqparse import RequestParser
 import json
-import sqlalchemy
-
-from app import db, query, http_auth
-from app.models import Client, User, Properties, Showings
-
+from app import query, http_auth
 
 class clientList:
-        # method to return clients by agent/username
-        
-        def get(self, username):
-                abort_null_agent(username)
-                clients = query.getClientsForUser(username)
-                return ({"clients":[client.json() for client in clients]})
+    # method to return clients by agent/username
 
-        #test for POST data from API to represent a new client
-        # add put method for clients, need to define format
+    def get(self, username):
+        abort_null_agent(username)
+        clients = query.getClientsForUser(username)
+        return {"clients": [client.json() for client in clients]}
 
-        def post(self, username):
-            
-            data = json.loads(request.data)
-            for client in data["clients"]:
-                addClient(username, client) # helper method to sanatize data, then add to database
+    # test for POST data from API to represent a new client
+    # add put method for clients, need to define format
 
-            # update response to conform with general standards.
-            return("sucess"+"\n")
+    def post(self, username):
 
-        def put(self, username):
-                # get client (or clients) by Id, update the included fields
-                # return success, or a list of failed updates.
+        data = json.loads(request.data)
+        for client in data["clients"]:
+            addClient(
+                username, client
+            )  # helper method to sanatize data, then add to database
 
-                pass
+        # update response to conform with general standards.
+        return "sucess" + "\n"
 
-        def delete(self, username):
-                # get client(s) be id, remove from db
-                # return success or list of failed deletions.
+    def put(self, username):
+        # get client (or clients) by Id, update the included fields
+        # return success, or a list of failed updates.
 
-                pass
+        pass
+
+    def delete(self, username):
+        # get client(s) be id, remove from db
+        # return success or list of failed deletions.
+
+        pass
+
 
 class Clients:
-# method to return clients by agent/username
+    # method to return clients by agent/username
 
-        def get(self, username, client_id):
-                abort_null_agent(username)
-                clients = db.session.query(Client).join(User).filter(User.username==username).\
-                        filter(Client.id==client_id).all()
-                return ({"clients":[client.json() for client in clients]})
+    def get(self, username, client_id):
+        abort_null_agent(username)
+        clients = (
+            db.session.query(Client)
+            .join(User)
+            .filter(User.username == username)
+            .filter(Client.id == client_id)
+            .all()
+        )
+        return {"clients": [client.json() for client in clients]}
 
-        def put(self, username, client_id):
-                client = query.getClientById(client_id)
-                # update client w/ new data
-                return #sucess or failure       
+    def put(self, username, client_id, update):
+        return  query.updateClient(client_id, update)
 
 
 class Property:
+    def get(self, property_id=None):
+        if property_id:
+            return query.getPropertyById(property_id).json()
 
-        def get(self,property_id=None):
-                if property_id:
-                        return query.getPropertyById(property_id).json()
+        return query.getProperties()
 
-                return query.getProperties()
+    def post(self):
+        data = json.loads(request.data)
+        # for prop in data["Properties"]:
+        # addProperty(username, client) # helper method to sanatize data, then add to database
+        # update response to conform with general standards.
+        return "sucess" + "\n"
 
-        def post(self):
-                data = json.loads(request.data)
-            # for prop in data["Properties"]:
-            # addProperty(username, client) # helper method to sanatize data, then add to database
-            # update response to conform with general standards.
-                return("sucess"+"\n")
+    def put(self, property_id):
+        abort_null_property(property_id)
+        pass
 
-        def put(self, property_id):
-                abort_null_property(property_id)                
-                pass
-
-        def delete(self, property_id):
-                abort_null_property(property_id)                
-                pass
+    def delete(self, property_id):
+        abort_null_property(property_id)
+        pass
 
 
 class Agents:
+    def get(self, username=None):
+        if username:
+            return query.getUserByName(username).json()
 
-        def get(self, username=None):
-                if username:
-                        return query.getUserByName(username).json()
+        users = query.getUsers()
+        return {"Users": [u.json() for u in users]}
 
-                users = query.getUsers()
-                return  ({"Users":[u.json() for u in users]})
 
 # Check for bad arguments
 class ShowingList:
+    def get(self, username=None, showing_id=None):
+        # abort_null_property(property_id)
+        if username:
+            return {"Showings": query.getShowingByUser(username)}
+        elif showing_id:
+            return {"Showings": query.getShowingById(showing_id)}
+        else:
+            return {"Showings": query.getShowings()}
 
-        def get(self, username=None, showing_id=None):
-                #abort_null_property(property_id)
-                if username:
-                        return ({"Showings": query.getShowingByUser(username)})
-                elif showing_id:
-                        return ({"Showings": query.getShowingById(showing_id)})
-                else:
-                        return {"Showings": query.getShowings()}
+    def post(self, property_id):
+        pass
 
-        def post(self, property_id):
-                pass
+    def put(self, property_id):
+        pass
 
-        def put(self, property_id):
-                pass
-
-        def delete(self, property_id):
-                pass
+    def delete(self, property_id):
+        pass
 
 
 # Move this to separate module in Home for adding/modifiying clients
@@ -126,16 +123,17 @@ def addClient(username, client):
 def addProperty(username, property):
     print("Adding Property:")
     print(f"Location: {property['Location']}")
-    client = Client(first_name=client['first_name'],
-                            last_name=client['last_name'],
-                            email=client['email'],
-                            phone=client['phone'],
-                            user_id=client['user_id'])
+    client = Client(
+        first_name=client["first_name"],
+        last_name=client["last_name"],
+        email=client["email"],
+        phone=client["phone"],
+        user_id=client["user_id"],
+    )
     db.session.add(client)
     db.session.commit()
     print("Client successfully added")
     return
-
 
 
 """
@@ -147,12 +145,13 @@ def verify(username, password):
     print(user)
     return user.check_password(password)
 """
+
+
 def abort_null_agent(agent):
-        if not db.session.query(User).filter_by(username=agent).first():
-                abort(404, message=f"Error: Agent {agent} does not exist")
+    if not db.session.query(User).filter_by(username=agent).first():
+        abort(404, message=f"Error: Agent {agent} does not exist")
 
 
 def abort_null_property(property_id):
-        if not db.session.query(Properties).filter_by(Property_ID=property_id).first():
-                abort(404, message=f"Property ID #{property_id} does not exist")
-
+    if not db.session.query(Properties).filter_by(Property_ID=property_id).first():
+        abort(404, message=f"Property ID #{property_id} does not exist")

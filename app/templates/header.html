@@ -5,23 +5,24 @@
                   href="{{ url_for('home.homepage') }}">Real Estate CRM
             </a>
             {% if logged_in %}
-            <div class="container"> 
-                <ul class="nav navbar-nav navbar-right">
-                  <li><a href="{{ url_for('home.dashboard') }}">Home</a></li>
-                    <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
-                    <li><a href="">API Documentation</a></li>
-                </ul>
-            </div>
+                <div class="container"> 
+                    <ul class="nav navbar-nav navbar-right">
+                      <li><a href="{{ url_for('home.dashboard') }}">Home</a></li>
+                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                        <li><a href="{{ url_for('home.updates') }}">Updates</a></li>
+                        <li><a href="">API Documentation</a></li>
+                    </ul>
+                </div>
             {% else %}
-            <div class="container"> 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
-                    <li><a href="">Register</a></li>
-                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
-                    <li><a href="{{ url_for('admin.homepage') }}">
-                        Administration</a></li>
-                </ul>
-            </div>
+                <div class="container"> 
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{{ url_for('home.homepage') }}">Home</a></li>
+                        <li><a href="">Register</a></li>
+                        <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                        <li><a href="{{ url_for('admin.homepage') }}">
+                            Administration</a></li>
+                    </ul>
+                </div>
             {% endif %}
         </div>
       </nav>
