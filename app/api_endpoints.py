@@ -11,89 +11,95 @@ from app import API
 
 
 class clientList(Resource):
-        @http_auth.login_required
-        def get(self, username):
-                return API.clientList.get(username) 
+    @http_auth.login_required
+    def get(self, username):
+        return API.clientList.get(username)
 
-        @http_auth.login_required
-        def post(self, username):
-            return API.clientList.post(username)
+    @http_auth.login_required
+    def post(self, username):
+        return API.clientList.post(username)
 
-        def put(self, username):
-                # get client (or clients) by Id, update the included fields
-                # return success, or a list of failed updates.
+    def put(self, username):
+        # get client (or clients) by Id, update the included fields
+        # return success, or a list of failed updates.
 
-                pass
+        pass
 
-        def delete(self, username):
-                # get client(s) be id, remove from db
-                # return success or list of failed deletions.
+    def delete(self, username):
+        # get client(s) be id, remove from db
+        # return success or list of failed deletions.
 
-                pass
+        pass
+
 
 class Clients(Resource):
-# method to return clients by agent/username
+    # method to return clients by agent/username
 
-        def get(self, username, client_id):
-                abort_null_agent(username)
-                clients = db.session.query(Client).join(User).filter(User.username==username).\
-                        filter(Client.id==client_id).all()
-                return ({"clients":[client.json() for client in clients]})
+    def get(self, username, client_id):
+        abort_null_agent(username)
+        clients = (
+            db.session.query(Client)
+            .join(User)
+            .filter(User.username == username)
+            .filter(Client.id == client_id)
+            .all()
+        )
+        return {"clients": [client.json() for client in clients]}
 
-        def put(self, username, client_id):
-                client = query.getClientById(client_id)
-                # update client w/ new data
-                return #sucess or failure       
+    def put(self, username, client_id):
+        client = query.getClientById(client_id)
+        # update client w/ new data
+        return  # sucess or failure
 
 
 class Property(Resource):
+    def get(self, property_id=None):
+        if property_id:
+            return query.getPropertyById(property_id).json()
 
-        def get(self,property_id=None):
-                if property_id:
-                        return query.getPropertyById(property_id).json()
+        return query.getProperties()
 
-                return query.getProperties()
+    def post(self):
+        data = json.loads(request.data)
+        # for prop in data["Properties"]:
+        # addProperty(username, client) # helper method to sanatize data, then add to database
+        # update response to conform with general standards.
+        return "sucess" + "\n"
 
-        def post(self):
-                data = json.loads(request.data)
-            # for prop in data["Properties"]:
-            # addProperty(username, client) # helper method to sanatize data, then add to database
-            # update response to conform with general standards.
-                return("sucess"+"\n")
+    def put(self, property_id):
+        abort_null_property(property_id)
+        pass
 
-        def put(self, property_id):
-                abort_null_property(property_id)                
-                pass
-
-        def delete(self, property_id):
-                abort_null_property(property_id)                
-                pass
+    def delete(self, property_id):
+        abort_null_property(property_id)
+        pass
 
 
 class Agents(Resource):
-        @http_auth.login_required
-        def get(self, username=None):
-                return API.Agents.get(username)
+    @http_auth.login_required
+    def get(self, username=None):
+        return API.Agents.get(username)
+
+
 # Check for bad arguments
 class ShowingList(Resource):
+    def get(self, username=None, showing_id=None):
+        # abort_null_property(property_id)
+        if username:
+            return {"Showings": query.getShowingByUser(username)}
+        elif showing_id:
+            return {"Showings": query.getShowingById(showing_id)}
+        else:
+            return {"Showings": query.getShowings()}
 
-        def get(self, username=None, showing_id=None):
-                #abort_null_property(property_id)
-                if username:
-                        return ({"Showings": query.getShowingByUser(username)})
-                elif showing_id:
-                        return ({"Showings": query.getShowingById(showing_id)})
-                else:
-                        return {"Showings": query.getShowings()}
+    def post(self, property_id):
+        pass
 
-        def post(self, property_id):
-                pass
+    def put(self, property_id):
+        pass
 
-        def put(self, property_id):
-                pass
-
-        def delete(self, property_id):
-                pass
+    def delete(self, property_id):
+        pass
 
 
 # Move this to separate module in Home for adding/modifiying clients
@@ -112,16 +118,17 @@ def addClient(username, client):
 def addProperty(username, property):
     print("Adding Property:")
     print(f"Location: {property['Location']}")
-    client = Client(first_name=client['first_name'],
-                            last_name=client['last_name'],
-                            email=client['email'],
-                            phone=client['phone'],
-                            user_id=client['user_id'])
+    client = Client(
+        first_name=client["first_name"],
+        last_name=client["last_name"],
+        email=client["email"],
+        phone=client["phone"],
+        user_id=client["user_id"],
+    )
     db.session.add(client)
     db.session.commit()
     print("Client successfully added")
     return
-
 
 
 """
@@ -133,12 +140,13 @@ def verify(username, password):
     print(user)
     return user.check_password(password)
 """
+
+
 def abort_null_agent(agent):
-        if not db.session.query(User).filter_by(username=agent).first():
-                abort(404, message=f"Error: Agent {agent} does not exist")
+    if not db.session.query(User).filter_by(username=agent).first():
+        abort(404, message=f"Error: Agent {agent} does not exist")
 
 
 def abort_null_property(property_id):
-        if not db.session.query(Properties).filter_by(Property_ID=property_id).first():
-                abort(404, message=f"Property ID #{property_id} does not exist")
-
+    if not db.session.query(Properties).filter_by(Property_ID=property_id).first():
+        abort(404, message=f"Property ID #{property_id} does not exist")
