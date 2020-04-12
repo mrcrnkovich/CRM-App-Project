@@ -14,3 +14,4 @@ bokeh
 Flask-HTTPAuth
 flask-restful
 black
+psycopg2
