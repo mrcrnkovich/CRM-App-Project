@@ -1,6 +1,7 @@
 {% macro header(logged_in) -%}
+  <div class="d-xl-flex">
       <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container">
+        <div class="d-flex">
             <a class="navbar-brand" 
                   href="{{ url_for('home.homepage') }}">Real Estate CRM
             </a>
@@ -26,4 +27,5 @@
             {% endif %}
         </div>
       </nav>
+    </div>
 {%- endmacro %}
