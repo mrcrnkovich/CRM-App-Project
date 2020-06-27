@@ -1,6 +1,6 @@
 flask
 flask_login
-wtforms
+email_validator
 flask_wtf
 flask_mail
 sqlalchemy
@@ -14,4 +14,4 @@ bokeh
 Flask-HTTPAuth
 flask-restful
 black
-psycopg2
+psycopg2-binary
