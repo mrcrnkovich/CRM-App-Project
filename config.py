@@ -10,7 +10,7 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SQLALCHEMY_DATABASE_URI = (
-        "postgresql://postgres:postgres@localhost:5432/crmDatabase"
+        "postgresql://postgres:secretPassword@crm-compose-db:5432/crmDatabase"
     )
 
 

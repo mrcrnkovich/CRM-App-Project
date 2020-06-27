@@ -31,6 +31,7 @@ from app import dashboard
 from app import api_endpoints
 from app import API
 
+db.create_all()
 # api.add_resource(api_endpoints.clientList, "/clients/<username>")
 # api.add_resource(API.Clients, "/clients/<username>/<client_id>")
 # api.add_resource(API.Property, "/properties",\

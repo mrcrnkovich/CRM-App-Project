@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: crm-compose-db
+    image: postgres:11.3-alpine
+    environment:
+       POSTGRES_PASSWORD: secretPassword
+       POSTGRES_DB: crmDatabase
+    volumes:
+     - crmDatabase:/var/lib/postgresql/data
+    ports:
+     - "5432:5432"
+  web:
+    build: .
+    container_name: crm-compose-web
+    ports:
+     - "5000:5000"
+    depends_on:
+     - db
+    volumes:
+     - .:/app
+
+volumes:
+    crmDatabase:
