@@ -29,15 +29,15 @@ login_manager.login_view = "auth.login"
 from app import models
 from app import dashboard
 from app import api_endpoints
-from app import API
+from app import api
 
 db.create_all()
 # api.add_resource(api_endpoints.clientList, "/clients/<username>")
-# api.add_resource(API.Clients, "/clients/<username>/<client_id>")
-# api.add_resource(API.Property, "/properties",\
+# api.add_resource(api.Clients, "/clients/<username>/<client_id>")
+# api.add_resource(api.Property, "/properties",\
 # 				"/properties/<property_id>")
 api.add_resource(api_endpoints.Agents, "/agents", "/agents/<username>")
-# api.add_resource(API.ShowingList, "/showings",\
+# api.add_resource(api.ShowingList, "/showings",\
 # 		 		"/showings/<username>",\
 # 		 		"/showings/id/<int:showing_id>")
 

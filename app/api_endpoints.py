@@ -7,17 +7,17 @@ import sqlalchemy
 from app import db, query, http_auth
 from app.models import Client, User, Properties, Showings
 
-from app import API
+from app import api
 
 
 class clientList(Resource):
     @http_auth.login_required
     def get(self, username):
-        return API.clientList.get(username)
+        return api.clientList.get(username)
 
     @http_auth.login_required
     def post(self, username):
-        return API.clientList.post(username)
+        return api.clientList.post(username)
 
     def put(self, username):
         # get client (or clients) by Id, update the included fields
@@ -33,8 +33,9 @@ class clientList(Resource):
 
 
 class Clients(Resource):
-    # method to return clients by agent/username
-
+    ''' Return dict, which contains a list of
+        clients by agent/username
+    '''
     def get(self, username, client_id):
         abort_null_agent(username)
         clients = (
@@ -78,7 +79,7 @@ class Property(Resource):
 class Agents(Resource):
     @http_auth.login_required
     def get(self, username=None):
-        return API.Agents.get(username)
+        return api.Agents.get(username)
 
 
 # Check for bad arguments

@@ -9,7 +9,7 @@ class clientList:
         clients = query.getClientsForUser(username)
         return {"clients": [client.json() for client in clients]}
 
-    # test for POST data from API to represent a new client
+    # test for POST data from api to represent a new client
     # add put method for clients, need to define format
 
     def post(self, username):
