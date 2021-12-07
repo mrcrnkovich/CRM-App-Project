@@ -13,6 +13,8 @@ currently being set-up for real-estate agents. :city_sunrise:
   The goal of this app is to allow a real estate team to track clients, properties shown, and properties under contract by agent.
   Agents should be able to share feedback about properties with other agents.
   
+  Run Test Version w/ Docker-Compose "docker-compose up"
+  
 ### Current Set-up
   MVP Goal: Basic CRUD app with infrastructure to allow cross sharing of properties and information between agents (users) within a team.
   
