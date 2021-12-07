@@ -1,23 +1,43 @@
+import json
 from flask import request
 from flask_restful import abort, Resource
-from flask_restful.reqparse import RequestParser
-import json
-import sqlalchemy
+# from flask_restful.reqparse import RequestParser
 
-from app import db, query, http_auth
+from app import api, db, query, http_auth
 from app.models import Client, User, Properties, Showings
 
-from app import api
+
+def abort_null_agent(agent):
+    if not db.session\
+            .query(User)\
+            .filter_by(username=agent)\
+            .first():
+        abort(404, message=f"Error: Agent {agent} does not exist")
+
+
+def abort_null_property(property_id):
+    if not db.session\
+            .query(Properties)\
+            .filter_by(Property_ID=property_id)\
+            .first():
+        abort(404, message=f"Property ID #{property_id} does not exist")
 
 
 class clientList(Resource):
+
     @http_auth.login_required
     def get(self, username):
-        return api.clientList.get(username)
+        abort_null_agent(username)
+        clients = query.getClientsForUser(username)
+        return {"clients": [client.json() for client in clients]}
 
     @http_auth.login_required
     def post(self, username):
-        return api.clientList.post(username)
+        data = json.loads(request.data)
+        for client in data.get("clients", None):
+            query.createClient(username.client)
+
+        return "success\n"
 
     def put(self, username):
         # get client (or clients) by Id, update the included fields
@@ -50,7 +70,7 @@ class Clients(Resource):
     def put(self, username, client_id):
         client = query.getClientById(client_id)
         # update client w/ new data
-        return  # sucess or failure
+        return  # success or failure
 
 
 class Property(Resource):
@@ -65,7 +85,7 @@ class Property(Resource):
         # for prop in data["Properties"]:
         # addProperty(username, client) # helper method to sanatize data, then add to database
         # update response to conform with general standards.
-        return "sucess" + "\n"
+        return "success\n"
 
     def put(self, property_id):
         abort_null_property(property_id)
@@ -79,7 +99,11 @@ class Property(Resource):
 class Agents(Resource):
     @http_auth.login_required
     def get(self, username=None):
-        return api.Agents.get(username)
+        if username:
+            return query.getUserByName(username).json()
+
+        users = query.getUsers()
+        return {"Users": [u.json() for u in users]}
 
 
 # Check for bad arguments
@@ -141,13 +165,3 @@ def verify(username, password):
     print(user)
     return user.check_password(password)
 """
-
-
-def abort_null_agent(agent):
-    if not db.session.query(User).filter_by(username=agent).first():
-        abort(404, message=f"Error: Agent {agent} does not exist")
-
-
-def abort_null_property(property_id):
-    if not db.session.query(Properties).filter_by(Property_ID=property_id).first():
-        abort(404, message=f"Property ID #{property_id} does not exist")
